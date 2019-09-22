@@ -1,5 +1,7 @@
 package com.brandonfeist.portfoliobackend.models.domain;
 
+import lombok.Data;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +11,7 @@ import javax.persistence.Table;
 import java.util.Date;
 import java.util.List;
 
+@Data
 //@Entity
 //@Table(name = "projects")
 public class Project {

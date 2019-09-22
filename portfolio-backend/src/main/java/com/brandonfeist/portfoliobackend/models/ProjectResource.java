@@ -10,7 +10,7 @@ import java.util.List;
 public class ProjectResource extends ResourceSupport {
 
     @FreeBuilder
-    interface Model {
+    public interface Model {
         String getName();
 
         String getImageUrl();
@@ -28,7 +28,7 @@ public class ProjectResource extends ResourceSupport {
     @JsonUnwrapped
     private final Model model;
 
-    ProjectResource(Model model) {
+    public ProjectResource(Model model) {
         this.model = model;
     }
 }

@@ -16,6 +16,8 @@ public class ProjectSummaryResourceAssembler
 
     @Override
     public ProjectSummaryResource toResource(Project project) {
-        return null;
+        ProjectSummaryResource.Model.Builder model = new ProjectSummaryResource.Model.Builder();
+
+        return new ProjectSummaryResource(model.build());
     }
 }
