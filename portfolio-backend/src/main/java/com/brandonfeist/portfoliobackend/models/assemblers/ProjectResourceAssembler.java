@@ -8,16 +8,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ProjectResourceAssembler
-        extends ResourceAssemblerSupport<Project, ProjectResource> {
+    extends ResourceAssemblerSupport<Project, ProjectResource> {
 
-    public ProjectResourceAssembler() {
-        super(ProjectController.class, ProjectResource.class);
-    }
+  public ProjectResourceAssembler() {
+    super(ProjectController.class, ProjectResource.class);
+  }
 
-    @Override
-    public ProjectResource toResource(Project project) {
-        ProjectResource.Model.Builder model = new ProjectResource.Model.Builder();
+  @Override
+  public ProjectResource toResource(Project project) {
+    ProjectResource.Model.Builder model = new ProjectResource.Model.Builder();
 
-        return new ProjectResource(model.build());
-    }
+    return new ProjectResource(model.build());
+  }
 }

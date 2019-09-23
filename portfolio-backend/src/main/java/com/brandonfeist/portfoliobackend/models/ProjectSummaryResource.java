@@ -1,34 +1,33 @@
 package com.brandonfeist.portfoliobackend.models;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import java.util.Date;
+import java.util.List;
 import org.inferred.freebuilder.FreeBuilder;
 import org.springframework.hateoas.ResourceSupport;
 
-import java.util.Date;
-import java.util.List;
-
 public class ProjectSummaryResource extends ResourceSupport {
 
-    @FreeBuilder
-    public interface Model {
-        String getName();
+  @FreeBuilder
+  public interface Model {
+    String getName();
 
-        String getImageUrl();
+    String getImageUrl();
 
-        String getSummary();
+    String getSummary();
 
-        List<String> getTechnologies();
+    List<String> getTechnologies();
 
-        Date getProjectDate();
+    Date getProjectDate();
 
-        class Builder extends ProjectSummaryResource_Model_Builder {
-        }
+    class Builder extends ProjectSummaryResource_Model_Builder {
     }
+  }
 
-    @JsonUnwrapped
-    private final Model model;
+  @JsonUnwrapped
+  private final Model model;
 
-    public ProjectSummaryResource(Model model) {
-        this.model = model;
-    }
+  public ProjectSummaryResource(Model model) {
+    this.model = model;
+  }
 }

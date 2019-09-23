@@ -18,27 +18,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController("/v1/projects")
 public class ProjectController {
 
-    private final ProjectResourceAssembler projectResourceAssembler;
-    private final ProjectSummaryResourceAssembler projectSummaryResourceAssembler;
+  private final ProjectResourceAssembler projectResourceAssembler;
+  private final ProjectSummaryResourceAssembler projectSummaryResourceAssembler;
 
-    @Autowired
-    public ProjectController(ProjectResourceAssembler projectResourceAssembler,
-                             ProjectSummaryResourceAssembler projectSummaryResourceAssembler) {
-        this.projectResourceAssembler = projectResourceAssembler;
-        this.projectSummaryResourceAssembler = projectSummaryResourceAssembler;
-    }
+  @Autowired
+  public ProjectController(ProjectResourceAssembler projectResourceAssembler,
+                           ProjectSummaryResourceAssembler projectSummaryResourceAssembler) {
+    this.projectResourceAssembler = projectResourceAssembler;
+    this.projectSummaryResourceAssembler = projectSummaryResourceAssembler;
+  }
 
-    public PagedResources<ProjectSummaryResource> getProjects(
-            PagedResourcesAssembler<ProjectSummaryResource> projectSummaryResourceAssembler,
-            @SortDefault("project_date") Pageable pageable
-    ) {
-        return null;
-    }
+  public PagedResources<ProjectSummaryResource> getProjects(
+      PagedResourcesAssembler<ProjectSummaryResource> projectSummaryResourceAssembler,
+      @SortDefault("project_date") Pageable pageable
+  ) {
+    return null;
+  }
 
-    @GetMapping("/{projectSlug}")
-    public ProjectResource getProject(
-            @PathVariable String projectSlug
-    ) {
-        return null;
-    }
+  @GetMapping("/{projectSlug}")
+  public ProjectResource getProject(
+      @PathVariable String projectSlug
+  ) {
+    return null;
+  }
 }
