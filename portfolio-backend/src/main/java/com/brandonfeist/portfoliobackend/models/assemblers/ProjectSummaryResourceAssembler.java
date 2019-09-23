@@ -3,12 +3,12 @@ package com.brandonfeist.portfoliobackend.models.assemblers;
 import com.brandonfeist.portfoliobackend.controllers.ProjectController;
 import com.brandonfeist.portfoliobackend.models.ProjectSummaryResource;
 import com.brandonfeist.portfoliobackend.models.domain.Project;
-import org.springframework.hateoas.mvc.IdentifiableResourceAssemblerSupport;
+import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ProjectSummaryResourceAssembler
-    extends IdentifiableResourceAssemblerSupport<Project, ProjectSummaryResource> {
+    extends ResourceAssemblerSupport<Project, ProjectSummaryResource> {
 
   public ProjectSummaryResourceAssembler() {
     super(ProjectController.class, ProjectSummaryResource.class);

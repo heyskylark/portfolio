@@ -15,12 +15,11 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import lombok.Data;
-import org.springframework.hateoas.Identifiable;
 
 @Data
 @Entity
 @Table(name = "projects")
-public class Project implements Identifiable<String> {
+public class Project {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
