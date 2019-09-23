@@ -15,11 +15,12 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import lombok.Data;
+import org.springframework.hateoas.Identifiable;
 
 @Data
 @Entity
 @Table(name = "projects")
-public class Project {
+public class Project implements Identifiable<String> {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -48,6 +49,10 @@ public class Project {
       inverseJoinColumns = { @JoinColumn(name = "technology_id") }
   )
   private Set<Technology> technologies;
+
+  @NotNull
+  @Column(nullable = false, unique = true)
+  private String slug;
 
   @NotNull
   @Column(name = "project_date", nullable = false)
