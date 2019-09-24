@@ -1,6 +1,7 @@
 package com.brandonfeist.portfoliobackend.controllers;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -27,6 +28,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -65,7 +67,7 @@ public class ProjectControllerTest {
     projects.add(projectUtils.createTestProject());
     final Page<Project> pagedResponse = new PageImpl<>(projects);
 
-    when(projectService.getProjects()).thenReturn(pagedResponse);
+    when(projectService.getProjects(any(Pageable.class))).thenReturn(pagedResponse);
     final MvcResult mvcResult = this.mockMvc.perform(get(PROJECT_ENDPOINT)).andDo(print())
         .andExpect(status().isOk()).andReturn();
 
@@ -93,5 +95,32 @@ public class ProjectControllerTest {
 
     assertEquals("The project resource returned is incorrect",
         objectMapper.writeValueAsString(expectedResponseBody), actualResponseBody);
+  }
+
+  @Test
+  public void whenProjectWithInvalidSlug_returns404() throws Exception {
+    when(projectService.getProject(anyString())).thenReturn(null);
+    this.mockMvc.perform(get(PROJECT_ENDPOINT + "/" + TEST_SLUG))
+        .andDo(print()).andExpect(status().isNotFound());
+  }
+
+  @Test
+  public void whenCreateProjectWithValidProjectResource_return201AndLocation() {
+
+  }
+
+  @Test
+  public void whenUpdateProjectWithValidProjectResource_return204() {
+
+  }
+
+  @Test
+  public void whenDeleteProjectWithValidSlug_return204() {
+
+  }
+
+  @Test
+  public void whenDeleteProjectWithInvalidSlug_return404() {
+
   }
 }
