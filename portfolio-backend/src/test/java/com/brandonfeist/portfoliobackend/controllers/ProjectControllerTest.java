@@ -13,12 +13,12 @@ import com.brandonfeist.portfoliobackend.models.assemblers.ProjectResourceAssemb
 import com.brandonfeist.portfoliobackend.models.assemblers.ProjectSummaryResourceAssembler;
 import com.brandonfeist.portfoliobackend.models.domain.Project;
 import com.brandonfeist.portfoliobackend.services.IProjectService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
