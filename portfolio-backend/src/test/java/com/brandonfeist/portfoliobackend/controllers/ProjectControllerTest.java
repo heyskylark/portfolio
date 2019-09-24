@@ -13,10 +13,9 @@ import com.brandonfeist.portfoliobackend.models.assemblers.ProjectResourceAssemb
 import com.brandonfeist.portfoliobackend.models.assemblers.ProjectSummaryResourceAssembler;
 import com.brandonfeist.portfoliobackend.models.domain.Project;
 import com.brandonfeist.portfoliobackend.services.IProjectService;
+import com.brandonfeist.portfoliobackend.utils.ProjectUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 
 import org.junit.BeforeClass;
@@ -34,18 +33,23 @@ import org.springframework.test.web.servlet.MvcResult;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(ProjectController.class)
-@Import({ ProjectResourceAssembler.class, ProjectSummaryResourceAssembler.class })
+@Import({
+    ProjectResourceAssembler.class,
+    ProjectSummaryResourceAssembler.class,
+    ProjectUtils.class
+})
 public class ProjectControllerTest {
 
   private static final String TEST_SLUG = "test-slug";
   private static final String PROJECT_ENDPOINT = "/v1/projects";
-  private static final long TEST_MILLISECONDS = 671241540000L;
-  private static final long TEST_MILLISECONDS_CURRENT = 1554854340000L;
 
   private static ObjectMapper objectMapper;
 
   @Autowired
   private MockMvc mockMvc;
+
+  @Autowired
+  private ProjectUtils projectUtils;
 
   @MockBean
   private IProjectService projectService;
@@ -58,7 +62,7 @@ public class ProjectControllerTest {
   @Test
   public void whenGettingProjects_returnsProjectSummaryResourcePage() throws Exception {
     final List<Project> projects = new ArrayList<>();
-    projects.add(createTestProject());
+    projects.add(projectUtils.createTestProject());
     final Page<Project> pagedResponse = new PageImpl<>(projects);
 
     when(projectService.getProjects()).thenReturn(pagedResponse);
@@ -66,7 +70,7 @@ public class ProjectControllerTest {
         .andExpect(status().isOk()).andReturn();
 
     final List<ProjectSummaryResource> projectSummaryResources = new ArrayList<>();
-    projectSummaryResources.add(createProjectSummaryResource());
+    projectSummaryResources.add(projectUtils.createProjectSummaryResource());
     final Page<ProjectSummaryResource> expectedResponseBody =
         new PageImpl<>(projectSummaryResources);
     final String actualResponseBody = mvcResult.getResponse().getContentAsString();
@@ -77,56 +81,17 @@ public class ProjectControllerTest {
 
   @Test
   public void whenProjectWithValidSlug_returnsProjectResource() throws Exception {
-    final Project testProject = createTestProject();
+    final Project testProject = projectUtils.createTestProject();
 
     when(projectService.getProject(anyString())).thenReturn(testProject);
     final MvcResult mvcResult = this.mockMvc.perform(get(PROJECT_ENDPOINT + "/" + TEST_SLUG))
         .andDo(print()).andExpect(status().isOk()).andReturn();
 
 
-    final ProjectResource expectedResponseBody = createProjectResource();
+    final ProjectResource expectedResponseBody = projectUtils.createProjectResource();
     final String actualResponseBody = mvcResult.getResponse().getContentAsString();
 
     assertEquals("The project resource returned is incorrect",
         objectMapper.writeValueAsString(expectedResponseBody), actualResponseBody);
-  }
-
-  private Project createTestProject() {
-    Project testProject = new Project();
-    testProject.setName("Test Project");
-    testProject.setImageUrl("https://www.test.com/testProjectImg");
-    testProject.setSummary("This is a test summary.");
-    testProject.setDescription("This is a test description, it is a bit longer...");
-    testProject.setTechnologies(new HashSet<>());
-    testProject.setSlug("test-project");
-    testProject.setProjectDate(new Date(TEST_MILLISECONDS));
-    testProject.setCreatedDate(new Date(TEST_MILLISECONDS_CURRENT));
-    testProject.setUpdatedDate(new Date(TEST_MILLISECONDS_CURRENT));
-
-    return testProject;
-  }
-
-  private ProjectResource createProjectResource() {
-    Project testProject = createTestProject();
-    ProjectResource.Model.Builder model = new ProjectResource.Model.Builder()
-        .setName(testProject.getName())
-        .setImageUrl(testProject.getImageUrl())
-        .setDescription(testProject.getDescription())
-        .addAllTechnologies(testProject.getTechnologies())
-        .setProjectDate(testProject.getProjectDate());
-
-    return new ProjectResource(model.build());
-  }
-
-  private ProjectSummaryResource createProjectSummaryResource() {
-    Project testProject = createTestProject();
-    ProjectSummaryResource.Model.Builder model = new ProjectSummaryResource.Model.Builder()
-        .setName(testProject.getName())
-        .setImageUrl(testProject.getImageUrl())
-        .setSummary(testProject.getSummary())
-        .addAllTechnologies(testProject.getTechnologies())
-        .setProjectDate(testProject.getProjectDate());
-
-    return new ProjectSummaryResource(model.build());
   }
 }
