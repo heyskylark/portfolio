@@ -37,7 +37,7 @@ public class ProjectService implements IProjectService {
   }
 
   @Override
-  public Project updateProject(ProjectResource projectResource) {
+  public Project updateProject(String projectSlug, ProjectResource projectResource) {
     return null;
   }
 

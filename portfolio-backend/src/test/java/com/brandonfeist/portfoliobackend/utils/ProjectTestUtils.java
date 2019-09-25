@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
  * for JUnit testing.
  */
 @Component
-public class ProjectUtils {
+public class ProjectTestUtils {
 
   private static final long TEST_MILLISECONDS = 671241540000L;
   private static final long TEST_MILLISECONDS_CURRENT = 1554854340000L;
@@ -44,6 +44,23 @@ public class ProjectUtils {
    */
   public ProjectResource createProjectResource() {
     Project testProject = createTestProject();
+    ProjectResource.Model.Builder model = new ProjectResource.Model.Builder()
+        .setName(testProject.getName())
+        .setImageUrl(testProject.getImageUrl())
+        .setDescription(testProject.getDescription())
+        .addAllTechnologies(testProject.getTechnologies())
+        .setProjectDate(testProject.getProjectDate());
+
+    return new ProjectResource(model.build());
+  }
+
+  /**
+   * A utility class to create a test Project Resource object from a given project
+   * for JUnit testing.
+   *
+   * @return an initialized test Project Resource.
+   */
+  public ProjectResource createProjectResource(Project testProject) {
     ProjectResource.Model.Builder model = new ProjectResource.Model.Builder()
         .setName(testProject.getName())
         .setImageUrl(testProject.getImageUrl())

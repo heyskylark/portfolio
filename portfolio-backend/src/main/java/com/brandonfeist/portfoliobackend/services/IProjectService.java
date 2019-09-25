@@ -43,7 +43,7 @@ public interface IProjectService {
    * @param projectResource client Project Resource that will be used to update an existing project.
    * @return the updated Project.
    */
-  Project updateProject(ProjectResource projectResource);
+  Project updateProject(String projectSlug, ProjectResource projectResource);
 
   /**
    * Deletes an existing project that is linked to the unique slug given. This slug must be valid
