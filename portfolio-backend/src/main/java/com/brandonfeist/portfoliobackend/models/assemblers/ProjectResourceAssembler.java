@@ -24,6 +24,7 @@ public class ProjectResourceAssembler
     final ProjectResource.Model.Builder model = new ProjectResource.Model.Builder()
         .setName(project.getName())
         .setImageUrl(project.getImageUrl())
+        .setSummary(project.getSummary())
         .setDescription(project.getDescription())
         .addAllTechnologies(project.getTechnologies())
         .setProjectDate(project.getProjectDate());

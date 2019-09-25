@@ -12,7 +12,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
 
 import lombok.Data;
 
@@ -24,23 +26,22 @@ public class Project {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @NotNull
+  @NotBlank(message = "Project image is mandatory")
   @Column(name = "image_url", nullable = false)
   private String imageUrl;
 
-  @NotNull
+  @NotBlank(message = "Name is mandatory")
   @Column(nullable = false)
   private String name;
 
-  @NotNull
+  @NotBlank(message = "Summary is mandatory")
   @Column(nullable = false)
   private String summary;
 
-  @NotNull
+  @NotBlank(message = "Description is mandatory")
   @Column(nullable = false)
   private String description;
 
-  @NotNull
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(
       name = "projects_technologies",
@@ -49,7 +50,7 @@ public class Project {
   )
   private Set<Technology> technologies;
 
-  @NotNull
+  @NotBlank(message = "Slug is mandatory")
   @Column(nullable = false, unique = true)
   private String slug;
 
@@ -58,10 +59,12 @@ public class Project {
   private Date projectDate;
 
   @NotNull
+  @PastOrPresent(message = "Created date cannot be in the future")
   @Column(name = "created_date", nullable = false)
   private Date createdDate;
 
   @NotNull
+  @PastOrPresent(message = "Updated date cannot be in the future")
   @Column(name = "updated_date", nullable = false)
   private Date updatedDate;
 }

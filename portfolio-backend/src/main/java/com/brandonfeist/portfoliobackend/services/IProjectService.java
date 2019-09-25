@@ -38,7 +38,9 @@ public interface IProjectService {
   Project createProject(ProjectResource projectResource);
 
   /**
-   * Updates an existing Project based off the Project Resource given.
+   * Updates an existing Project based off the Project Resource given. The slug must be valid
+   * (which means that a project with the given slug must exist. Otherwise a not found will be
+   * thrown). If the name of the Project has changed, the slug will be updated as well.
    *
    * @param projectResource client Project Resource that will be used to update an existing project.
    * @return the updated Project.

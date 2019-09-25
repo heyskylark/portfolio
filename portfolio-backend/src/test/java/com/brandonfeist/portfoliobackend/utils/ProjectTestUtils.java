@@ -49,6 +49,7 @@ public class ProjectTestUtils {
     ProjectResource.Model.Builder model = new ProjectResource.Model.Builder()
         .setName(testProject.getName())
         .setImageUrl(testProject.getImageUrl())
+        .setSummary(testProject.getSummary())
         .setDescription(testProject.getDescription())
         .addAllTechnologies(testProject.getTechnologies())
         .setProjectDate(testProject.getProjectDate());
@@ -70,6 +71,7 @@ public class ProjectTestUtils {
     ProjectResource.Model.Builder model = new ProjectResource.Model.Builder()
         .setName(testProject.getName())
         .setImageUrl(testProject.getImageUrl())
+        .setSummary(testProject.getSummary())
         .setDescription(testProject.getDescription())
         .addAllTechnologies(testProject.getTechnologies())
         .setProjectDate(testProject.getProjectDate());

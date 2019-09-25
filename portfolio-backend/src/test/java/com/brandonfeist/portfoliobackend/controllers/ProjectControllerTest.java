@@ -5,9 +5,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.hateoas.core.DummyInvocationUtils.methodOn;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -42,7 +42,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -150,6 +149,16 @@ public class ProjectControllerTest {
   }
 
   @Test
+  public void whenCreateProjectWithInvalidProjectResource_throwBadRequest() throws Exception {
+    // TODO figure out a way to pass in invalid project resource.
+    this.mockMvc.perform(post(PROJECT_ENDPOINT)
+        .content(objectMapper.writeValueAsString(projectTestUtils.createProjectResource())))
+        .andDo(print()).andExpect(status().isBadRequest());
+
+    verify(projectService, never()).createProject(any(ProjectResource.class));
+  }
+
+  @Test
   public void whenUpdateProjectWithValidProjectResource_return204() throws Exception {
     when(projectService.updateProject(anyString(), any(ProjectResource.class)))
         .thenReturn(projectTestUtils.createTestProject());
@@ -174,6 +183,7 @@ public class ProjectControllerTest {
 
   @Test
   public void whenUpdateProjectWithInvalidProjectResource_throwBadRequest() throws Exception {
+    // TODO figure out a way to pass in invalid project resource.
     Project testProject = projectTestUtils.createTestProject();
     testProject.setName(null);
     ProjectResource testProjectResource = projectTestUtils.createProjectResource(testProject);
