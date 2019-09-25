@@ -6,6 +6,8 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
+import static org.springframework.hateoas.core.DummyInvocationUtils.methodOn;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -23,8 +25,12 @@ import com.brandonfeist.portfoliobackend.models.domain.Project;
 import com.brandonfeist.portfoliobackend.services.IProjectService;
 import com.brandonfeist.portfoliobackend.utils.ProjectTestUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -36,6 +42,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -51,6 +58,7 @@ import org.springframework.web.server.ResponseStatusException;
 })
 public class ProjectControllerTest {
 
+  private static final String MOCK_MVC_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
   private static final String TEST_SLUG = "test-slug";
   private static final String PROJECT_ENDPOINT = "/v1/projects";
 
@@ -62,12 +70,21 @@ public class ProjectControllerTest {
   @Autowired
   private ProjectTestUtils projectTestUtils;
 
+  @Autowired
+  private ProjectResourceAssembler projectResourceAssembler;
+
   @MockBean
   private IProjectService projectService;
 
+  /**
+   * Projects test setup. Since MockMVC formats dates differently than ObjectMapper default we must
+   * manually change the format and remove the timezone difference.
+   */
   @BeforeClass
   public static void init() {
-    objectMapper = new ObjectMapper();
+    DateFormat dateFormat = new SimpleDateFormat(MOCK_MVC_DATE_FORMAT);
+    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+    objectMapper = new ObjectMapper().setDateFormat(dateFormat);
   }
 
   @Test
@@ -99,11 +116,12 @@ public class ProjectControllerTest {
         .andDo(print()).andExpect(status().isOk()).andReturn();
 
 
-    final ProjectResource expectedResponseBody = projectTestUtils.createProjectResource();
+    final String expectedResponseBody = objectMapper
+        .writeValueAsString(projectTestUtils.createProjectResource());
     final String actualResponseBody = mvcResult.getResponse().getContentAsString();
 
     assertEquals("The project resource returned is incorrect",
-        objectMapper.writeValueAsString(expectedResponseBody), actualResponseBody);
+        expectedResponseBody, actualResponseBody);
   }
 
   @Test
@@ -115,7 +133,7 @@ public class ProjectControllerTest {
         .andDo(print()).andExpect(status().isNotFound()).andReturn();
 
     String expectedBodyResponse = "Project with slug [" + TEST_SLUG + "] was not found.";
-    String actualBodyResponse = mvcResult.getResponse().getContentAsString();
+    String actualBodyResponse = mvcResult.getResponse().getErrorMessage();
 
     assertEquals("Invalid slug, project should not be found",
         expectedBodyResponse, actualBodyResponse);
@@ -148,7 +166,7 @@ public class ProjectControllerTest {
         .andDo(print()).andExpect(status().isNotFound()).andReturn();
 
     String expectedBodyResponse = "Project with slug [" + TEST_SLUG + "] was not found.";
-    String actualBodyResponse = mvcResult.getResponse().getContentAsString();
+    String actualBodyResponse = mvcResult.getResponse().getErrorMessage();
 
     assertEquals("Invalid slug, project should not be found",
         expectedBodyResponse, actualBodyResponse);
@@ -181,7 +199,7 @@ public class ProjectControllerTest {
         .andDo(print()).andExpect(status().isNotFound()).andReturn();
 
     String expectedBodyResponse = "Project with slug [" + TEST_SLUG + "] was not found.";
-    String actualBodyResponse = mvcResult.getResponse().getContentAsString();
+    String actualBodyResponse = mvcResult.getResponse().getErrorMessage();
 
     assertEquals("Invalid slug, project should not be found",
         expectedBodyResponse, actualBodyResponse);

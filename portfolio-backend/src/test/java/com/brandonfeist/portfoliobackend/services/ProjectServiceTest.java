@@ -19,8 +19,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -42,7 +42,7 @@ public class ProjectServiceTest {
   @Autowired
   private ProjectTestUtils projectTestUtils;
 
-  @MockBean
+  @Mock
   private ProjectRepository projectRepository;
 
   @Before
@@ -70,7 +70,7 @@ public class ProjectServiceTest {
   }
 
   @Test(expected = ResponseStatusException.class)
-  public void whenGetProjectWithInvalidSlug_throwsResponseStatusException() {
+  public void whenGetProjectWithInvalidSlug_throws404() {
     when(projectRepository.findBySlug(anyString())).thenReturn(null);
     projectService.getProject(TEST_SLUG);
   }
@@ -78,7 +78,8 @@ public class ProjectServiceTest {
   @Test
   public void whenCreateProjectWithValidProjectResource_returnProject() {
     when(projectRepository.save(any(Project.class))).thenReturn(testProject);
-    final Project returnProject = projectService.createProject(projectTestUtils.createProjectResource());
+    final Project returnProject = projectService
+        .createProject(projectTestUtils.createProjectResource());
 
     assertEquals("The project returned by createProject is not correct",
         testProject, returnProject);

@@ -4,6 +4,7 @@ import com.brandonfeist.portfoliobackend.models.ProjectResource;
 import com.brandonfeist.portfoliobackend.models.ProjectSummaryResource;
 import com.brandonfeist.portfoliobackend.models.assemblers.ProjectResourceAssembler;
 import com.brandonfeist.portfoliobackend.models.assemblers.ProjectSummaryResourceAssembler;
+import com.brandonfeist.portfoliobackend.models.domain.Project;
 import com.brandonfeist.portfoliobackend.services.IProjectService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +14,12 @@ import org.springframework.data.web.SortDefault;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
-@RestController("/v1/projects")
+@RestController
+@RequestMapping("/v1/projects")
 public class ProjectController {
 
   private final ProjectResourceAssembler projectResourceAssembler;
@@ -49,10 +52,20 @@ public class ProjectController {
     return null;
   }
 
+  /**
+   * Projects controller method that returns a Project related to the unique slug given.
+   * If a project does not exist with the given slug, getProject will return a 404.
+   * Projects are converted to ProjectResource for client consumption.
+   *
+   * @param projectSlug a unique identifier tied to a Project.
+   * @return if a project exists with the given slug that will be returned, otherwise a 404.
+   */
   @GetMapping("/{projectSlug}")
   public ProjectResource getProject(
       @PathVariable String projectSlug
   ) {
-    return null;
+    Project project = projectService.getProject(projectSlug);
+
+    return projectResourceAssembler.toResource(project);
   }
 }

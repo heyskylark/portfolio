@@ -8,7 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
 @Service
@@ -28,7 +30,15 @@ public class ProjectService implements IProjectService {
 
   @Override
   public Project getProject(String projectSlug) {
-    return null;
+    Project project = projectRepository.findBySlug(projectSlug);
+
+    if (project == null) {
+      log.info("Project with slug [{}] was not found.", projectSlug);
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+          "Project with slug [" + projectSlug + "] was not found.");
+    }
+
+    return projectRepository.findBySlug(projectSlug);
   }
 
   @Override

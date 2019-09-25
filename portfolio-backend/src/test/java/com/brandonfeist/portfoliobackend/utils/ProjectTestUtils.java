@@ -5,6 +5,8 @@ import com.brandonfeist.portfoliobackend.models.ProjectSummaryResource;
 import com.brandonfeist.portfoliobackend.models.domain.Project;
 import java.util.Date;
 import java.util.HashSet;
+
+import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Component;
 
 /**
@@ -51,7 +53,11 @@ public class ProjectTestUtils {
         .addAllTechnologies(testProject.getTechnologies())
         .setProjectDate(testProject.getProjectDate());
 
-    return new ProjectResource(model.build());
+    final Link self = new Link("http://localhost/v1/projects/test-project", "self");
+    final ProjectResource returnResource = new ProjectResource(model.build());
+    returnResource.add(self);
+
+    return returnResource;
   }
 
   /**
