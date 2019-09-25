@@ -8,6 +8,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.brandonfeist.portfoliobackend.models.ProjectInputModel;
 import com.brandonfeist.portfoliobackend.models.domain.Project;
 import com.brandonfeist.portfoliobackend.repositories.ProjectRepository;
 import com.brandonfeist.portfoliobackend.services.impl.ProjectService;
@@ -85,7 +86,7 @@ public class ProjectServiceTest {
   public void whenCreateProjectWithValidProjectResource_returnProject() {
     when(projectRepository.findBySlugStartingWith(anyString())).thenReturn(Collections.emptyList());
     when(projectRepository.save(any(Project.class))).thenReturn(null);
-    projectService.createProject(projectTestUtils.createProjectResource());
+    projectService.createProject(projectTestUtils.createTestProjectInputModel());
 
     verify(projectRepository, times(1)).findBySlugStartingWith(anyString());
     verify(projectRepository, times(1)).save(any(Project.class));
@@ -95,7 +96,7 @@ public class ProjectServiceTest {
   public void whenUpdateProjectWithValidProjectResource_returnProject() {
     when(projectRepository.findBySlug(anyString())).thenReturn(testProject);
     when(projectRepository.save(any(Project.class))).thenReturn(null);
-    projectService.updateProject(TEST_SLUG, projectTestUtils.createProjectResource(testProject));
+    projectService.updateProject(TEST_SLUG, projectTestUtils.createTestProjectInputModel());
 
     verify(projectRepository, times(1)).findBySlug(anyString());
     verify(projectRepository, never()).findBySlugStartingWith(anyString());
@@ -107,9 +108,9 @@ public class ProjectServiceTest {
     when(projectRepository.findBySlug(anyString())).thenReturn(testProject);
     when(projectRepository.findBySlugStartingWith(anyString())).thenReturn(Collections.emptyList());
     when(projectRepository.save(any(Project.class))).thenReturn(null);
-    Project updatedProject = projectTestUtils.createTestProject();
+    ProjectInputModel updatedProject = projectTestUtils.createTestProjectInputModel();
     updatedProject.setName("Test123");
-    projectService.updateProject(TEST_SLUG, projectTestUtils.createProjectResource(updatedProject));
+    projectService.updateProject(TEST_SLUG, updatedProject);
 
     verify(projectRepository, times(1)).findBySlug(anyString());
     verify(projectRepository, times(1)).findBySlugStartingWith(anyString());
@@ -119,7 +120,7 @@ public class ProjectServiceTest {
   @Test(expected = ResponseStatusException.class)
   public void whenUpdateProjectWithInvalidSlug_throws404() {
     when(projectRepository.findBySlug(anyString())).thenReturn(null);
-    projectService.updateProject(TEST_SLUG, projectTestUtils.createProjectResource(testProject));
+    projectService.updateProject(TEST_SLUG, projectTestUtils.createTestProjectInputModel());
 
     verify(projectRepository, times(1)).findBySlug(anyString());
     verify(projectRepository, never()).findBySlugStartingWith(anyString());

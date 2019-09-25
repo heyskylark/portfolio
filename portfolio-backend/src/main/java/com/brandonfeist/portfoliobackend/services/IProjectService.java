@@ -1,5 +1,6 @@
 package com.brandonfeist.portfoliobackend.services;
 
+import com.brandonfeist.portfoliobackend.models.ProjectInputModel;
 import com.brandonfeist.portfoliobackend.models.ProjectResource;
 import com.brandonfeist.portfoliobackend.models.domain.Project;
 import org.springframework.data.domain.Page;
@@ -32,20 +33,21 @@ public interface IProjectService {
   /**
    * Creates and saves a Project using the given Project Resource.
    *
-   * @param projectResource client Project Resource that will be used to initialize a Project.
+   * @param projectInputModel client Project Input Model that will be used to initialize a Project.
    * @return the created and saved Project.
    */
-  Project createProject(ProjectResource projectResource);
+  Project createProject(ProjectInputModel projectInputModel);
 
   /**
    * Updates an existing Project based off the Project Resource given. The slug must be valid
    * (which means that a project with the given slug must exist. Otherwise a not found will be
    * thrown). If the name of the Project has changed, the slug will be updated as well.
    *
-   * @param projectResource client Project Resource that will be used to update an existing project.
+   * @param projectInputModel client Project Input Model that will be used to update an
+   *                          existing project.
    * @return the updated Project.
    */
-  Project updateProject(String projectSlug, ProjectResource projectResource);
+  Project updateProject(String projectSlug, ProjectInputModel projectInputModel);
 
   /**
    * Deletes an existing project that is linked to the unique slug given. This slug must be valid

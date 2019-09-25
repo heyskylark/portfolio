@@ -1,5 +1,6 @@
 package com.brandonfeist.portfoliobackend.utils;
 
+import com.brandonfeist.portfoliobackend.models.ProjectInputModel;
 import com.brandonfeist.portfoliobackend.models.ProjectResource;
 import com.brandonfeist.portfoliobackend.models.ProjectSummaryResource;
 import com.brandonfeist.portfoliobackend.models.domain.Project;
@@ -35,6 +36,23 @@ public class ProjectTestUtils {
     testProject.setProjectDate(new Date(TEST_MILLISECONDS));
     testProject.setCreatedDate(new Date(TEST_MILLISECONDS_CURRENT));
     testProject.setUpdatedDate(new Date(TEST_MILLISECONDS_CURRENT));
+
+    return testProject;
+  }
+
+  /**
+   * A utility class to create a test Project Input Model for JUnit testing.
+   *
+   * @return an initialized Project Input Model.
+   */
+  public ProjectInputModel createTestProjectInputModel() {
+    ProjectInputModel testProject = new ProjectInputModel();
+    testProject.setName("Test Project");
+    testProject.setImageUrl("https://www.test.com/testProjectImg");
+    testProject.setSummary("This is a test summary.");
+    testProject.setDescription("This is a test description, it is a bit longer...");
+    testProject.setTechnologies(new HashSet<>());
+    testProject.setProjectDate(new Date(TEST_MILLISECONDS));
 
     return testProject;
   }

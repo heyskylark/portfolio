@@ -1,6 +1,6 @@
 package com.brandonfeist.portfoliobackend.services.impl;
 
-import com.brandonfeist.portfoliobackend.models.ProjectResource;
+import com.brandonfeist.portfoliobackend.models.ProjectInputModel;
 import com.brandonfeist.portfoliobackend.models.domain.Project;
 import com.brandonfeist.portfoliobackend.repositories.ProjectRepository;
 import com.brandonfeist.portfoliobackend.services.IProjectService;
@@ -51,16 +51,16 @@ public class ProjectService implements IProjectService {
   }
 
   @Override
-  public Project createProject(ProjectResource projectResource) {
-    final Project project = projectResource.toProject();
+  public Project createProject(ProjectInputModel projectInputModel) {
+    final Project project = projectInputModel.toProject();
     project.setSlug(generateSlug(project.getName()));
 
     return projectRepository.save(project);
   }
 
   @Override
-  public Project updateProject(String projectSlug, ProjectResource projectResource) {
-    final Project updatedProject = projectResource.toProject();
+  public Project updateProject(String projectSlug, ProjectInputModel projectInputModel) {
+    final Project updatedProject = projectInputModel.toProject();
     final Project oldProject = projectRepository.findBySlug(projectSlug);
 
     if (oldProject == null) {

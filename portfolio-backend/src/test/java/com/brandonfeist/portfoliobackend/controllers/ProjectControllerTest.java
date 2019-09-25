@@ -18,6 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.brandonfeist.portfoliobackend.models.ProjectInputModel;
 import com.brandonfeist.portfoliobackend.models.ProjectResource;
 import com.brandonfeist.portfoliobackend.models.assemblers.ProjectResourceAssembler;
 import com.brandonfeist.portfoliobackend.models.assemblers.ProjectSummaryResourceAssembler;
@@ -43,6 +44,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -60,6 +62,8 @@ public class ProjectControllerTest {
   private static final String MOCK_MVC_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
   private static final String TEST_SLUG = "test-slug";
   private static final String PROJECT_ENDPOINT = "/v1/projects";
+  private static final MediaType MEDIA_TYPE_JSON_UTF8 =
+      new MediaType("application", "json", java.nio.charset.Charset.forName("UTF-8"));
 
   private static ObjectMapper objectMapper;
 
@@ -136,12 +140,14 @@ public class ProjectControllerTest {
 
   @Test
   public void whenCreateProjectWithValidProjectResource_return201AndLocation() throws Exception {
-    when(projectService.createProject(any(ProjectResource.class)))
+    when(projectService.createProject(any(ProjectInputModel.class)))
         .thenReturn(projectTestUtils.createTestProject());
     this.mockMvc.perform(post(PROJECT_ENDPOINT)
+        .contentType(MEDIA_TYPE_JSON_UTF8)
         .content(objectMapper.writeValueAsString(projectTestUtils.createProjectResource())))
-        .andDo(print()).andExpect(status().isCreated())
-        .andExpect(header().string(LOCATION, "Project Resource self HATEOAS url"));
+        .andDo(print())
+        .andExpect(status().isCreated())
+        .andExpect(header().string(LOCATION, "http://localhost/v1/projects/test-project"));
   }
 
   @Test
@@ -152,12 +158,12 @@ public class ProjectControllerTest {
         .andDo(print())
         .andExpect(status().isBadRequest());
 
-    verify(projectService, never()).createProject(any(ProjectResource.class));
+    verify(projectService, never()).createProject(any(ProjectInputModel.class));
   }
 
   @Test
   public void whenUpdateProjectWithValidProjectResource_return204() throws Exception {
-    when(projectService.updateProject(anyString(), any(ProjectResource.class)))
+    when(projectService.updateProject(anyString(), any(ProjectInputModel.class)))
         .thenReturn(projectTestUtils.createTestProject());
     this.mockMvc.perform(put(PROJECT_ENDPOINT + "/" + TEST_SLUG)
         .content(objectMapper.writeValueAsString(projectTestUtils.createProjectResource())))
@@ -167,7 +173,7 @@ public class ProjectControllerTest {
 
   @Test
   public void whenUpdateProjectWithInvalidSlug_return404() throws Exception {
-    when(projectService.updateProject(anyString(), any(ProjectResource.class))).thenReturn(null);
+    when(projectService.updateProject(anyString(), any(ProjectInputModel.class))).thenReturn(null);
     final MvcResult mvcResult = this.mockMvc.perform(put(PROJECT_ENDPOINT + "/" + TEST_SLUG)
         .content(objectMapper.writeValueAsString(projectTestUtils.createProjectResource())))
         .andDo(print())

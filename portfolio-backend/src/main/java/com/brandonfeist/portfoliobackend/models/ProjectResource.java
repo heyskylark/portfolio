@@ -37,22 +37,4 @@ public class ProjectResource extends ResourceSupport {
   public ProjectResource(Model model) {
     this.model = model;
   }
-
-  /**
-   * Turns this ProjectResource model into a Project object.
-   *
-   * @return a Project that reflects this ProjectResource
-   */
-  public Project toProject() {
-    final ProjectResource.Model model = this.model;
-    final Project project = new Project();
-
-    project.setName(model.getName());
-    project.setImageUrl(model.getImageUrl());
-    project.setDescription(model.getDescription());
-    project.setTechnologies(model.getTechnologies());
-    project.setProjectDate(model.getProjectDate());
-
-    return project;
-  }
 }
