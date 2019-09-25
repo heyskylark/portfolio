@@ -8,6 +8,7 @@ import com.brandonfeist.portfoliobackend.models.domain.Project;
 import com.brandonfeist.portfoliobackend.services.IProjectService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.data.web.SortDefault;
@@ -44,12 +45,22 @@ public class ProjectController {
     this.projectService = projectService;
   }
 
+  /**
+   * Returns a page of Project Summary Resources in the order specified by the pageable object.
+   * Projects are converted to a Project Summary Resource before being handed off to the client.
+   *
+   * @param resourcesAssembler an assembler to convert Projects to Project Summary Resources.
+   * @param pageable specifies the sort order, size of page, and page number.
+   * @return a page resource of Project Summary Resources.
+   */
   @GetMapping
   public PagedResources<ProjectSummaryResource> getProjects(
-      PagedResourcesAssembler<ProjectSummaryResource> projectSummaryResourceAssembler,
+      PagedResourcesAssembler<Project> resourcesAssembler,
       @SortDefault("project_date") Pageable pageable
   ) {
-    return null;
+    Page<Project> projects = projectService.getProjects(pageable);
+
+    return resourcesAssembler.toResource(projects, projectSummaryResourceAssembler);
   }
 
   /**

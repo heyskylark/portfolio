@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpHeaders.LOCATION;
@@ -18,7 +19,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.brandonfeist.portfoliobackend.models.ProjectResource;
-import com.brandonfeist.portfoliobackend.models.ProjectSummaryResource;
 import com.brandonfeist.portfoliobackend.models.assemblers.ProjectResourceAssembler;
 import com.brandonfeist.portfoliobackend.models.assemblers.ProjectSummaryResourceAssembler;
 import com.brandonfeist.portfoliobackend.models.domain.Project;
@@ -69,9 +69,6 @@ public class ProjectControllerTest {
   @Autowired
   private ProjectTestUtils projectTestUtils;
 
-  @Autowired
-  private ProjectResourceAssembler projectResourceAssembler;
-
   @MockBean
   private IProjectService projectService;
 
@@ -93,17 +90,12 @@ public class ProjectControllerTest {
     final Page<Project> pagedResponse = new PageImpl<>(projects);
 
     when(projectService.getProjects(any(Pageable.class))).thenReturn(pagedResponse);
-    final MvcResult mvcResult = this.mockMvc.perform(get(PROJECT_ENDPOINT)).andDo(print())
-        .andExpect(status().isOk()).andReturn();
+    MvcResult mvcResult = this.mockMvc.perform(get(PROJECT_ENDPOINT))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andReturn();
 
-    final List<ProjectSummaryResource> projectSummaryResources = new ArrayList<>();
-    projectSummaryResources.add(projectTestUtils.createProjectSummaryResource());
-    final Page<ProjectSummaryResource> expectedResponseBody =
-        new PageImpl<>(projectSummaryResources);
-    final String actualResponseBody = mvcResult.getResponse().getContentAsString();
-
-    assertEquals("The project summary resources returned is incorrect",
-        objectMapper.writeValueAsString(expectedResponseBody), actualResponseBody);
+    verify(projectService, times(1)).getProjects(any(Pageable.class));
   }
 
   @Test
@@ -112,13 +104,15 @@ public class ProjectControllerTest {
 
     when(projectService.getProject(anyString())).thenReturn(testProject);
     final MvcResult mvcResult = this.mockMvc.perform(get(PROJECT_ENDPOINT + "/" + TEST_SLUG))
-        .andDo(print()).andExpect(status().isOk()).andReturn();
-
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andReturn();
 
     final String expectedResponseBody = objectMapper
         .writeValueAsString(projectTestUtils.createProjectResource());
     final String actualResponseBody = mvcResult.getResponse().getContentAsString();
 
+    verify(projectService, times(1)).getProject(anyString());
     assertEquals("The project resource returned is incorrect",
         expectedResponseBody, actualResponseBody);
   }
@@ -129,7 +123,9 @@ public class ProjectControllerTest {
         .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,
         "Project with slug [" + TEST_SLUG + "] was not found."));
     final MvcResult mvcResult = this.mockMvc.perform(get(PROJECT_ENDPOINT + "/" + TEST_SLUG))
-        .andDo(print()).andExpect(status().isNotFound()).andReturn();
+        .andDo(print())
+        .andExpect(status().isNotFound())
+        .andReturn();
 
     String expectedBodyResponse = "Project with slug [" + TEST_SLUG + "] was not found.";
     String actualBodyResponse = mvcResult.getResponse().getErrorMessage();
@@ -153,7 +149,8 @@ public class ProjectControllerTest {
     // TODO figure out a way to pass in invalid project resource.
     this.mockMvc.perform(post(PROJECT_ENDPOINT)
         .content(objectMapper.writeValueAsString(projectTestUtils.createProjectResource())))
-        .andDo(print()).andExpect(status().isBadRequest());
+        .andDo(print())
+        .andExpect(status().isBadRequest());
 
     verify(projectService, never()).createProject(any(ProjectResource.class));
   }
@@ -164,7 +161,8 @@ public class ProjectControllerTest {
         .thenReturn(projectTestUtils.createTestProject());
     this.mockMvc.perform(put(PROJECT_ENDPOINT + "/" + TEST_SLUG)
         .content(objectMapper.writeValueAsString(projectTestUtils.createProjectResource())))
-        .andDo(print()).andExpect(status().isNoContent());
+        .andDo(print())
+        .andExpect(status().isNoContent());
   }
 
   @Test
@@ -172,7 +170,9 @@ public class ProjectControllerTest {
     when(projectService.updateProject(anyString(), any(ProjectResource.class))).thenReturn(null);
     final MvcResult mvcResult = this.mockMvc.perform(put(PROJECT_ENDPOINT + "/" + TEST_SLUG)
         .content(objectMapper.writeValueAsString(projectTestUtils.createProjectResource())))
-        .andDo(print()).andExpect(status().isNotFound()).andReturn();
+        .andDo(print())
+        .andExpect(status().isNotFound())
+        .andReturn();
 
     String expectedBodyResponse = "Project with slug [" + TEST_SLUG + "] was not found.";
     String actualBodyResponse = mvcResult.getResponse().getErrorMessage();
@@ -190,14 +190,16 @@ public class ProjectControllerTest {
 
     this.mockMvc.perform(put(PROJECT_ENDPOINT + "/" + TEST_SLUG)
         .content(objectMapper.writeValueAsString(testProjectResource)))
-        .andDo(print()).andExpect(status().isBadRequest());
+        .andDo(print())
+        .andExpect(status().isBadRequest());
   }
 
   @Test
   public void whenDeleteProjectWithValidSlug_return204() throws Exception {
     doNothing().when(projectService).deleteProject(anyString());
     this.mockMvc.perform(delete(PROJECT_ENDPOINT + "/" + TEST_SLUG))
-        .andDo(print()).andExpect(status().isNoContent());
+        .andDo(print())
+        .andExpect(status().isNoContent());
   }
 
   @Test
@@ -206,7 +208,9 @@ public class ProjectControllerTest {
         "Project with slug [" + TEST_SLUG + "] was not found."))
         .when(projectService).deleteProject(TEST_SLUG);
     final MvcResult mvcResult = this.mockMvc.perform(delete(PROJECT_ENDPOINT + "/" + TEST_SLUG))
-        .andDo(print()).andExpect(status().isNotFound()).andReturn();
+        .andDo(print())
+        .andExpect(status().isNotFound())
+        .andReturn();
 
     String expectedBodyResponse = "Project with slug [" + TEST_SLUG + "] was not found.";
     String actualBodyResponse = mvcResult.getResponse().getErrorMessage();
