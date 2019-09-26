@@ -19,7 +19,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.brandonfeist.portfoliobackend.models.ProjectInputModel;
-import com.brandonfeist.portfoliobackend.models.ProjectResource;
 import com.brandonfeist.portfoliobackend.models.assemblers.ProjectResourceAssembler;
 import com.brandonfeist.portfoliobackend.models.assemblers.ProjectSummaryResourceAssembler;
 import com.brandonfeist.portfoliobackend.models.domain.Project;
@@ -152,9 +151,12 @@ public class ProjectControllerTest {
 
   @Test
   public void whenCreateProjectWithInvalidProjectResource_throwBadRequest() throws Exception {
-    // TODO figure out a way to pass in invalid project resource.
+    ProjectInputModel badProject = projectTestUtils.createTestProjectInputModel();
+    badProject.setName(null);
+
     this.mockMvc.perform(post(PROJECT_ENDPOINT)
-        .content(objectMapper.writeValueAsString(projectTestUtils.createProjectResource())))
+        .contentType(MEDIA_TYPE_JSON_UTF8)
+        .content(objectMapper.writeValueAsString(badProject)))
         .andDo(print())
         .andExpect(status().isBadRequest());
 
@@ -166,6 +168,7 @@ public class ProjectControllerTest {
     when(projectService.updateProject(anyString(), any(ProjectInputModel.class)))
         .thenReturn(projectTestUtils.createTestProject());
     this.mockMvc.perform(put(PROJECT_ENDPOINT + "/" + TEST_SLUG)
+        .contentType(MEDIA_TYPE_JSON_UTF8)
         .content(objectMapper.writeValueAsString(projectTestUtils.createProjectResource())))
         .andDo(print())
         .andExpect(status().isNoContent());
@@ -173,8 +176,11 @@ public class ProjectControllerTest {
 
   @Test
   public void whenUpdateProjectWithInvalidSlug_return404() throws Exception {
-    when(projectService.updateProject(anyString(), any(ProjectInputModel.class))).thenReturn(null);
+    when(projectService.updateProject(anyString(), any(ProjectInputModel.class)))
+        .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,
+        "Project with slug [" + TEST_SLUG + "] was not found."));
     final MvcResult mvcResult = this.mockMvc.perform(put(PROJECT_ENDPOINT + "/" + TEST_SLUG)
+        .contentType(MEDIA_TYPE_JSON_UTF8)
         .content(objectMapper.writeValueAsString(projectTestUtils.createProjectResource())))
         .andDo(print())
         .andExpect(status().isNotFound())
@@ -189,13 +195,12 @@ public class ProjectControllerTest {
 
   @Test
   public void whenUpdateProjectWithInvalidProjectResource_throwBadRequest() throws Exception {
-    // TODO figure out a way to pass in invalid project resource.
-    Project testProject = projectTestUtils.createTestProject();
-    testProject.setName(null);
-    ProjectResource testProjectResource = projectTestUtils.createProjectResource(testProject);
+    ProjectInputModel badProject = projectTestUtils.createTestProjectInputModel();
+    badProject.setName(null);
 
     this.mockMvc.perform(put(PROJECT_ENDPOINT + "/" + TEST_SLUG)
-        .content(objectMapper.writeValueAsString(testProjectResource)))
+        .contentType(MEDIA_TYPE_JSON_UTF8)
+        .content(objectMapper.writeValueAsString(badProject)))
         .andDo(print())
         .andExpect(status().isBadRequest());
   }
