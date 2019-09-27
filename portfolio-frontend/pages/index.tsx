@@ -1,6 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
-import Nav from '../components/nav';
+import Project from '../components/project';
 import '../styles/styles.scss';
 
 const Home = () => (
@@ -9,7 +9,7 @@ const Home = () => (
       <title>Home</title>
     </Head>
 
-    <Nav />
+    <Project />
 
     <div className="hero">
       <h1 className="title">Welcome to Next.js!</h1>
