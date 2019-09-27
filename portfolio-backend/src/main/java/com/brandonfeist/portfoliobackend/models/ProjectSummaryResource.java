@@ -17,6 +17,8 @@ public class ProjectSummaryResource extends ResourceSupport {
 
     String getSummary();
 
+    String getProjectType();
+
     List<Technology> getTechnologies();
 
     Date getProjectDate();

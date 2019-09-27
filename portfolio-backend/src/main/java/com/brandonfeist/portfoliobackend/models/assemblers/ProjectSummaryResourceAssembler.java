@@ -25,6 +25,7 @@ public class ProjectSummaryResourceAssembler
         .setName(project.getName())
         .setImageUrl(project.getImageUrl())
         .setSummary(project.getSummary())
+        .setProjectType(project.getProjectType())
         .addAllTechnologies(project.getTechnologies())
         .setProjectDate(project.getProjectDate());
 

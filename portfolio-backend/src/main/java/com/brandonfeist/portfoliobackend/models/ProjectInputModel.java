@@ -22,6 +22,9 @@ public class ProjectInputModel {
   @NotBlank(message = "Description is mandatory")
   private String description;
 
+  @NotBlank(message = "Project type is mandatory")
+  private String projectType;
+
   private Set<Technology> technologies;
 
   @NotNull
@@ -37,8 +40,9 @@ public class ProjectInputModel {
 
     project.setName(this.name);
     project.setImageUrl(this.imageUrl);
-    project.setDescription(this.summary);
+    project.setSummary(this.summary);
     project.setDescription(this.description);
+    project.setProjectType(this.projectType);
     project.setTechnologies(this.technologies);
     project.setProjectDate(this.projectDate);
 

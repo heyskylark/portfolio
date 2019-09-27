@@ -50,6 +50,10 @@ public class Project {
   )
   private Set<Technology> technologies;
 
+  @NotBlank(message = "Project type is mandatory")
+  @Column(name = "project_type", nullable = false)
+  private String projectType;
+
   @NotBlank(message = "Slug is mandatory")
   @Column(nullable = false, unique = true)
   private String slug;

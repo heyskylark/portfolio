@@ -108,6 +108,13 @@ public class ProjectController {
     return new ResponseEntity<>(headers, HttpStatus.CREATED);
   }
 
+  /**
+   * Used to update a n existing Project. If the project does not exist a 404 will be returned.
+   *
+   * @param projectSlug identifier for an existing Project.
+   * @param projectInputModel a user input model that represents the Project changes.
+   * @return a 204 No-Content will be returned if the Project is updated successfully.
+   */
   @PutMapping("/{projectSlug}")
   public ResponseEntity<Void> updateProject(
       @PathVariable String projectSlug,
@@ -118,6 +125,12 @@ public class ProjectController {
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
+  /**
+   * Used to delete an existing Project. If the project does not exist a 404 will be returned.
+   *
+   * @param projectSlug identifier for an existing Project.
+   * @return a 204 No-Content will be returned if the Project is deleted successfully.
+   */
   @DeleteMapping("/{projectSlug}")
   public ResponseEntity<Void> deleteProject(
       @PathVariable String projectSlug

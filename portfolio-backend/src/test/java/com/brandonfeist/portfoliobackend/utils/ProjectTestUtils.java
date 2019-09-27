@@ -31,6 +31,7 @@ public class ProjectTestUtils {
     testProject.setImageUrl("https://www.test.com/testProjectImg");
     testProject.setSummary("This is a test summary.");
     testProject.setDescription("This is a test description, it is a bit longer...");
+    testProject.setProjectType("Personal");
     testProject.setTechnologies(new HashSet<>());
     testProject.setSlug("test-project");
     testProject.setProjectDate(new Date(TEST_MILLISECONDS));
@@ -51,6 +52,7 @@ public class ProjectTestUtils {
     testProject.setImageUrl("https://www.test.com/testProjectImg");
     testProject.setSummary("This is a test summary.");
     testProject.setDescription("This is a test description, it is a bit longer...");
+    testProject.setProjectType("Personal");
     testProject.setTechnologies(new HashSet<>());
     testProject.setProjectDate(new Date(TEST_MILLISECONDS));
 
@@ -69,6 +71,7 @@ public class ProjectTestUtils {
         .setImageUrl(testProject.getImageUrl())
         .setSummary(testProject.getSummary())
         .setDescription(testProject.getDescription())
+        .setProjectType(testProject.getProjectType())
         .addAllTechnologies(testProject.getTechnologies())
         .setProjectDate(testProject.getProjectDate());
 
@@ -77,40 +80,5 @@ public class ProjectTestUtils {
     returnResource.add(self);
 
     return returnResource;
-  }
-
-  /**
-   * A utility class to create a test Project Resource object from a given project
-   * for JUnit testing.
-   *
-   * @return an initialized test Project Resource.
-   */
-  public ProjectResource createProjectResource(Project testProject) {
-    ProjectResource.Model.Builder model = new ProjectResource.Model.Builder()
-        .setName(testProject.getName())
-        .setImageUrl(testProject.getImageUrl())
-        .setSummary(testProject.getSummary())
-        .setDescription(testProject.getDescription())
-        .addAllTechnologies(testProject.getTechnologies())
-        .setProjectDate(testProject.getProjectDate());
-
-    return new ProjectResource(model.build());
-  }
-
-  /**
-   * A utility class to create a test Project Summary Resource object for JUnit testing.
-   *
-   * @return an initialized test Project Summary Resource.
-   */
-  public ProjectSummaryResource createProjectSummaryResource() {
-    Project testProject = createTestProject();
-    ProjectSummaryResource.Model.Builder model = new ProjectSummaryResource.Model.Builder()
-        .setName(testProject.getName())
-        .setImageUrl(testProject.getImageUrl())
-        .setSummary(testProject.getSummary())
-        .addAllTechnologies(testProject.getTechnologies())
-        .setProjectDate(testProject.getProjectDate());
-
-    return new ProjectSummaryResource(model.build());
   }
 }

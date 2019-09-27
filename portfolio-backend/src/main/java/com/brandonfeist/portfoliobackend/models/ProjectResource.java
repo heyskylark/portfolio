@@ -1,6 +1,5 @@
 package com.brandonfeist.portfoliobackend.models;
 
-import com.brandonfeist.portfoliobackend.models.domain.Project;
 import com.brandonfeist.portfoliobackend.models.domain.Technology;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import java.util.Date;
@@ -22,6 +21,8 @@ public class ProjectResource extends ResourceSupport {
     String getSummary();
 
     String getDescription();
+
+    String getProjectType();
 
     Set<Technology> getTechnologies();
 
