@@ -2,10 +2,13 @@ package com.brandonfeist.portfoliobackend.utils;
 
 import com.brandonfeist.portfoliobackend.models.ProjectInputModel;
 import com.brandonfeist.portfoliobackend.models.ProjectResource;
-import com.brandonfeist.portfoliobackend.models.ProjectSummaryResource;
+import com.brandonfeist.portfoliobackend.models.TechnologyInputModel;
+import com.brandonfeist.portfoliobackend.models.TechnologyResource;
 import com.brandonfeist.portfoliobackend.models.domain.Project;
+import com.brandonfeist.portfoliobackend.models.domain.Technology;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Component;
@@ -32,7 +35,7 @@ public class ProjectTestUtils {
     testProject.setSummary("This is a test summary.");
     testProject.setDescription("This is a test description, it is a bit longer...");
     testProject.setProjectType("Personal");
-    testProject.setTechnologies(new HashSet<>());
+    testProject.setTechnologies(createTechnologies());
     testProject.setSlug("test-project");
     testProject.setProjectDate(new Date(TEST_MILLISECONDS));
     testProject.setCreatedDate(new Date(TEST_MILLISECONDS_CURRENT));
@@ -46,17 +49,16 @@ public class ProjectTestUtils {
    *
    * @return an initialized Project Input Model.
    */
-  public ProjectInputModel createTestProjectInputModel() {
-    ProjectInputModel testProject = new ProjectInputModel();
-    testProject.setName("Test Project");
-    testProject.setImageUrl("https://www.test.com/testProjectImg");
-    testProject.setSummary("This is a test summary.");
-    testProject.setDescription("This is a test description, it is a bit longer...");
-    testProject.setProjectType("Personal");
-    testProject.setTechnologies(new HashSet<>());
-    testProject.setProjectDate(new Date(TEST_MILLISECONDS));
-
-    return testProject;
+  public ProjectInputModel createTestProjectInputModel(String name) {
+    return new ProjectInputModel(
+        name,
+        "https://www.test.com/testProjectImg",
+        "This is a test summary.",
+        "This is a test description, it is a bit longer...",
+        "Personal",
+        createTechnologyInputModel(),
+        new Date(TEST_MILLISECONDS)
+    );
   }
 
   /**
@@ -72,7 +74,7 @@ public class ProjectTestUtils {
         .setSummary(testProject.getSummary())
         .setDescription(testProject.getDescription())
         .setProjectType(testProject.getProjectType())
-        .addAllTechnologies(testProject.getTechnologies())
+        .addAllTechnologies(createTechnologyResources())
         .setProjectDate(testProject.getProjectDate());
 
     final Link self = new Link("http://localhost/v1/projects/test-project", "self");
@@ -80,5 +82,46 @@ public class ProjectTestUtils {
     returnResource.add(self);
 
     return returnResource;
+  }
+
+  /**
+   * Creates a single technology object.
+   *
+   * @return a technology object with the name React.
+   */
+  public Technology createTechnology() {
+    final Technology technology = new Technology();
+    technology.setName("React");
+
+    return technology;
+  }
+
+  /**
+   * Creates a set of Technology objects. This set only contains one technology object which is
+   * made using the {@link #createTechnology()}  createTechnology} method.
+   *
+   * @return a set of Technologies.
+   */
+  public Set<Technology> createTechnologies() {
+    final Set<Technology> technologies = new HashSet<>();
+    final Technology technology = createTechnology();
+    technologies.add(technology);
+
+    return technologies;
+  }
+
+  private Set<TechnologyResource> createTechnologyResources() {
+    final Set<TechnologyResource> technologyResources = new HashSet<>();
+    final TechnologyResource.Builder technologyResource = new TechnologyResource.Builder();
+    technologyResources.add(technologyResource.setName("React").build());
+
+    return technologyResources;
+  }
+
+  private Set<TechnologyInputModel> createTechnologyInputModel() {
+    final Set<TechnologyInputModel> technologyInputModels = new HashSet<>();
+    technologyInputModels.add(new TechnologyInputModel("React"));
+
+    return technologyInputModels;
   }
 }

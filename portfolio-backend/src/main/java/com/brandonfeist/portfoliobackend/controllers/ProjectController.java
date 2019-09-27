@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.data.web.SortDefault;
 import org.springframework.hateoas.PagedResources;
@@ -65,7 +66,7 @@ public class ProjectController {
   @GetMapping
   public PagedResources<ProjectSummaryResource> getProjects(
       PagedResourcesAssembler<Project> resourcesAssembler,
-      @SortDefault("project_date") Pageable pageable
+      @SortDefault(sort = "projectDate", direction = Sort.Direction.DESC) Pageable pageable
   ) {
     Page<Project> projects = projectService.getProjects(pageable);
 

@@ -143,7 +143,8 @@ public class ProjectControllerTest {
         .thenReturn(projectTestUtils.createTestProject());
     this.mockMvc.perform(post(PROJECT_ENDPOINT)
         .contentType(MEDIA_TYPE_JSON_UTF8)
-        .content(objectMapper.writeValueAsString(projectTestUtils.createProjectResource())))
+        .content(objectMapper.writeValueAsString(
+            projectTestUtils.createTestProjectInputModel("Test project"))))
         .andDo(print())
         .andExpect(status().isCreated())
         .andExpect(header().string(LOCATION, "http://localhost/v1/projects/test-project"));
@@ -151,8 +152,7 @@ public class ProjectControllerTest {
 
   @Test
   public void whenCreateProjectWithInvalidProjectResource_throwBadRequest() throws Exception {
-    ProjectInputModel badProject = projectTestUtils.createTestProjectInputModel();
-    badProject.setName(null);
+    ProjectInputModel badProject = projectTestUtils.createTestProjectInputModel(null);
 
     this.mockMvc.perform(post(PROJECT_ENDPOINT)
         .contentType(MEDIA_TYPE_JSON_UTF8)
@@ -169,7 +169,8 @@ public class ProjectControllerTest {
         .thenReturn(projectTestUtils.createTestProject());
     this.mockMvc.perform(put(PROJECT_ENDPOINT + "/" + TEST_SLUG)
         .contentType(MEDIA_TYPE_JSON_UTF8)
-        .content(objectMapper.writeValueAsString(projectTestUtils.createProjectResource())))
+        .content(objectMapper.writeValueAsString(
+            projectTestUtils.createTestProjectInputModel("Test project"))))
         .andDo(print())
         .andExpect(status().isNoContent());
   }
@@ -181,7 +182,8 @@ public class ProjectControllerTest {
         "Project with slug [" + TEST_SLUG + "] was not found."));
     final MvcResult mvcResult = this.mockMvc.perform(put(PROJECT_ENDPOINT + "/" + TEST_SLUG)
         .contentType(MEDIA_TYPE_JSON_UTF8)
-        .content(objectMapper.writeValueAsString(projectTestUtils.createProjectResource())))
+        .content(objectMapper.writeValueAsString(
+            projectTestUtils.createTestProjectInputModel("Test project"))))
         .andDo(print())
         .andExpect(status().isNotFound())
         .andReturn();
@@ -195,8 +197,7 @@ public class ProjectControllerTest {
 
   @Test
   public void whenUpdateProjectWithInvalidProjectResource_throwBadRequest() throws Exception {
-    ProjectInputModel badProject = projectTestUtils.createTestProjectInputModel();
-    badProject.setName(null);
+    ProjectInputModel badProject = projectTestUtils.createTestProjectInputModel(null);
 
     this.mockMvc.perform(put(PROJECT_ENDPOINT + "/" + TEST_SLUG)
         .contentType(MEDIA_TYPE_JSON_UTF8)

@@ -2,11 +2,14 @@ package com.brandonfeist.portfoliobackend.services.impl;
 
 import com.brandonfeist.portfoliobackend.models.ProjectInputModel;
 import com.brandonfeist.portfoliobackend.models.domain.Project;
+import com.brandonfeist.portfoliobackend.models.domain.Technology;
 import com.brandonfeist.portfoliobackend.repositories.ProjectRepository;
+import com.brandonfeist.portfoliobackend.repositories.TechnologyRepository;
 import com.brandonfeist.portfoliobackend.services.IProjectService;
 import com.github.slugify.Slugify;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -24,11 +27,21 @@ public class ProjectService implements IProjectService {
 
   private final ProjectRepository projectRepository;
 
+  private final TechnologyRepository technologyRepository;
+
   private final Slugify slugify;
 
+  /**
+   * Autowire constructor for ProjectService.
+   *
+   * @param projectRepository projectRepository used to interact with Project DB table.
+   * @param technologyRepository technologyRepositroy used to interact with Technology DB table.
+   */
   @Autowired
-  public ProjectService(ProjectRepository projectRepository) {
+  public ProjectService(ProjectRepository projectRepository,
+                        TechnologyRepository technologyRepository) {
     this.projectRepository = projectRepository;
+    this.technologyRepository = technologyRepository;
     this.slugify = new Slugify();
   }
 
@@ -53,6 +66,7 @@ public class ProjectService implements IProjectService {
   @Override
   public Project createProject(ProjectInputModel projectInputModel) {
     final Project project = projectInputModel.toProject();
+    project.setTechnologies(convertTechSet(project.getTechnologies()));
     project.setSlug(generateSlug(project.getName()));
 
     return projectRepository.save(project);
@@ -71,6 +85,7 @@ public class ProjectService implements IProjectService {
 
     updatedProject.setId(oldProject.getId());
     updatedProject.setCreatedDate(oldProject.getCreatedDate());
+    updatedProject.setTechnologies(convertTechSet(updatedProject.getTechnologies()));
     if (updatedProject.getName().equals(oldProject.getName())) {
       updatedProject.setSlug(oldProject.getSlug());
     } else {
@@ -91,6 +106,19 @@ public class ProjectService implements IProjectService {
     }
 
     projectRepository.delete(project);
+  }
+
+  private Technology getTechIfExists(Technology technology) {
+    Technology existingTechnology = technologyRepository.findByName(technology.getName());
+
+    return (existingTechnology != null) ? existingTechnology : technology;
+  }
+
+  private Set<Technology> convertTechSet(Set<Technology> technologySet) {
+    return technologySet
+        .stream()
+        .map(this::getTechIfExists)
+        .collect(Collectors.toSet());
   }
 
   private String generateSlug(String seed) {

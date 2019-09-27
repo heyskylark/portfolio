@@ -22,7 +22,7 @@ public class ProjectInputModelTest {
 
   @Before
   public void init() {
-    projectInputModel = projectTestUtils.createTestProjectInputModel();
+    projectInputModel = projectTestUtils.createTestProjectInputModel("Test Project");
   }
 
   @Test
@@ -40,7 +40,7 @@ public class ProjectInputModelTest {
     assertEquals("Project project types does not match with input model",
         projectInputModel.getProjectType(), testProject.getProjectType());
     assertEquals("Project technologies types does not match with input model",
-        projectInputModel.getTechnologies(), testProject.getTechnologies());
+        projectTestUtils.createTechnologies(), testProject.getTechnologies());
     assertEquals("Project project date types does not match with input model",
         projectInputModel.getProjectDate(), testProject.getProjectDate());
   }

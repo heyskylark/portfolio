@@ -2,6 +2,7 @@ package com.brandonfeist.portfoliobackend.models.domain;
 
 import java.util.Date;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -42,7 +45,7 @@ public class Project {
   @Column(nullable = false)
   private String description;
 
-  @ManyToMany(fetch = FetchType.EAGER)
+  @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
   @JoinTable(
       name = "projects_technologies",
       joinColumns = { @JoinColumn(name = "project_id") },
@@ -71,4 +74,15 @@ public class Project {
   @PastOrPresent(message = "Updated date cannot be in the future")
   @Column(name = "updated_date", nullable = false)
   private Date updatedDate;
+
+  @PrePersist
+  protected void onCreate() {
+    createdDate = new Date();
+    updatedDate = new Date();
+  }
+
+  @PreUpdate
+  protected void onUpdate() {
+    updatedDate = new Date();
+  }
 }

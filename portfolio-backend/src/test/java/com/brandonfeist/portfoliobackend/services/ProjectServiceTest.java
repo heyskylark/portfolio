@@ -11,6 +11,7 @@ import static org.mockito.Mockito.when;
 import com.brandonfeist.portfoliobackend.models.ProjectInputModel;
 import com.brandonfeist.portfoliobackend.models.domain.Project;
 import com.brandonfeist.portfoliobackend.repositories.ProjectRepository;
+import com.brandonfeist.portfoliobackend.repositories.TechnologyRepository;
 import com.brandonfeist.portfoliobackend.services.impl.ProjectService;
 import com.brandonfeist.portfoliobackend.utils.ProjectTestUtils;
 import java.util.ArrayList;
@@ -48,6 +49,9 @@ public class ProjectServiceTest {
   @Mock
   private ProjectRepository projectRepository;
 
+  @Mock
+  TechnologyRepository technologyRepository;
+
   @Before
   public void init() {
     testProject = projectTestUtils.createTestProject();
@@ -84,20 +88,27 @@ public class ProjectServiceTest {
 
   @Test
   public void whenCreateProjectWithValidProjectResource_returnProject() {
+    when(technologyRepository.findByName(anyString()))
+        .thenReturn(projectTestUtils.createTechnology());
     when(projectRepository.findBySlugStartingWith(anyString())).thenReturn(Collections.emptyList());
     when(projectRepository.save(any(Project.class))).thenReturn(null);
-    projectService.createProject(projectTestUtils.createTestProjectInputModel());
+    projectService.createProject(projectTestUtils.createTestProjectInputModel("Test Project"));
 
+    verify(technologyRepository, times(1)).findByName(anyString());
     verify(projectRepository, times(1)).findBySlugStartingWith(anyString());
     verify(projectRepository, times(1)).save(any(Project.class));
   }
 
   @Test
   public void whenUpdateProjectWithValidProjectResource_returnProject() {
+    when(technologyRepository.findByName(anyString()))
+        .thenReturn(projectTestUtils.createTechnology());
     when(projectRepository.findBySlug(anyString())).thenReturn(testProject);
     when(projectRepository.save(any(Project.class))).thenReturn(null);
-    projectService.updateProject(TEST_SLUG, projectTestUtils.createTestProjectInputModel());
+    projectService.updateProject(TEST_SLUG, projectTestUtils
+        .createTestProjectInputModel("Test Project"));
 
+    verify(technologyRepository, times(1)).findByName(anyString());
     verify(projectRepository, times(1)).findBySlug(anyString());
     verify(projectRepository, never()).findBySlugStartingWith(anyString());
     verify(projectRepository, times(1)).save(any(Project.class));
@@ -105,13 +116,15 @@ public class ProjectServiceTest {
 
   @Test
   public void whenUpdateProjectWithNameChange_returnProjectWithNewSlug() {
+    when(technologyRepository.findByName(anyString()))
+        .thenReturn(projectTestUtils.createTechnology());
     when(projectRepository.findBySlug(anyString())).thenReturn(testProject);
     when(projectRepository.findBySlugStartingWith(anyString())).thenReturn(Collections.emptyList());
     when(projectRepository.save(any(Project.class))).thenReturn(null);
-    ProjectInputModel updatedProject = projectTestUtils.createTestProjectInputModel();
-    updatedProject.setName("Test123");
+    ProjectInputModel updatedProject = projectTestUtils.createTestProjectInputModel("Test123");
     projectService.updateProject(TEST_SLUG, updatedProject);
 
+    verify(technologyRepository, times(1)).findByName(anyString());
     verify(projectRepository, times(1)).findBySlug(anyString());
     verify(projectRepository, times(1)).findBySlugStartingWith(anyString());
     verify(projectRepository, times(1)).save(any(Project.class));
@@ -120,7 +133,8 @@ public class ProjectServiceTest {
   @Test(expected = ResponseStatusException.class)
   public void whenUpdateProjectWithInvalidSlug_throws404() {
     when(projectRepository.findBySlug(anyString())).thenReturn(null);
-    projectService.updateProject(TEST_SLUG, projectTestUtils.createTestProjectInputModel());
+    projectService.updateProject(TEST_SLUG, projectTestUtils
+        .createTestProjectInputModel("Test Project"));
 
     verify(projectRepository, times(1)).findBySlug(anyString());
     verify(projectRepository, never()).findBySlugStartingWith(anyString());

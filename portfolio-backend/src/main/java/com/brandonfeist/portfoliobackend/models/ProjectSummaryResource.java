@@ -19,7 +19,7 @@ public class ProjectSummaryResource extends ResourceSupport {
 
     String getProjectType();
 
-    List<Technology> getTechnologies();
+    List<TechnologyResource> getTechnologies();
 
     Date getProjectDate();
 

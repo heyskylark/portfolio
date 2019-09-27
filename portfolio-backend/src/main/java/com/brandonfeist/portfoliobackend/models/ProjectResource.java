@@ -1,14 +1,11 @@
 package com.brandonfeist.portfoliobackend.models;
 
-import com.brandonfeist.portfoliobackend.models.domain.Technology;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import java.util.Date;
 import java.util.Set;
 
 import org.inferred.freebuilder.FreeBuilder;
 import org.springframework.hateoas.ResourceSupport;
-
-
 
 public class ProjectResource extends ResourceSupport {
 
@@ -24,7 +21,7 @@ public class ProjectResource extends ResourceSupport {
 
     String getProjectType();
 
-    Set<Technology> getTechnologies();
+    Set<TechnologyResource> getTechnologies();
 
     Date getProjectDate();
 
