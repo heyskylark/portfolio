@@ -1,1 +1,21 @@
 @import 'foundation/_systems';
+
+body {
+  color: $grey-0;
+  background-color: $grey-9;
+  font-family: 'Roboto', sans-serif;
+}
+h1 {
+  margin: 0;
+}
+h2 {
+  margin: 0;
+}
+h3 {
+  margin: 0;
+}
+p {
+  margin: 0;
+}
+
+@import 'components/projects';

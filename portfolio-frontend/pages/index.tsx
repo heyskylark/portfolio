@@ -12,15 +12,32 @@ class Home extends React.Component {
       <div>
         <Head>
           <title>Home</title>
+          <link
+            href="https://fonts.googleapis.com/css?family=Roboto:400,400i,700,700i&display=swap"
+            rel="stylesheet"
+          ></link>
         </Head>
 
-        <Project
-          name="Test"
-          imageUrl="image.url"
-          projectType="Personal"
-          technologies={technologies}
-          projectDate={projectDate}
-        />
+        <div className="ps-table">
+          <Project
+            name="Test Project Super Nova, Hack"
+            imageUrl="https://www.filtelescu.com/img/SmartHomeProPic.png"
+            projectType="Personal"
+            technologies={technologies}
+            summary="This is a test summary..."
+            projectDate={projectDate}
+            selfLink="https://localhost:8080/projects/test-project"
+          />
+          <Project
+            name="Test Project Super Nova, Hack"
+            imageUrl="https://www.filtelescu.com/img/SmartHomeProPic.png"
+            projectType="Personal"
+            technologies={technologies}
+            summary="This is a test summary..."
+            projectDate={projectDate}
+            selfLink="https://localhost:8080/projects/test-project"
+          />
+        </div>
       </div>
     );
   }
