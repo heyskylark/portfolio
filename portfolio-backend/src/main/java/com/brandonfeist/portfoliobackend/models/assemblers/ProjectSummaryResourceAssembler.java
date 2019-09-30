@@ -39,7 +39,8 @@ public class ProjectSummaryResourceAssembler
         .setSummary(project.getSummary())
         .setProjectType(project.getProjectType())
         .addAllTechnologies(technologyResource)
-        .setProjectDate(project.getProjectDate());
+        .setProjectDate(project.getProjectDate())
+        .setSlug(project.getSlug());
 
     return new ProjectSummaryResource(model.build());
   }

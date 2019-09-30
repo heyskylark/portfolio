@@ -23,6 +23,8 @@ public class ProjectSummaryResource extends ResourceSupport {
 
     Date getProjectDate();
 
+    String getSlug();
+
     class Builder extends ProjectSummaryResource_Model_Builder {
     }
   }
