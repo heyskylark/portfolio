@@ -1,5 +1,6 @@
 .ps-table {
-  padding: 1.5rem 1.5rem 0;
+  padding: 1.5rem 1.5rem;
+  // background: linear-gradient(110deg, #fdcd3b 60%, #ffed4b 60%);
 }
 .ps-container {
   margin-bottom: $size-10;
@@ -11,13 +12,13 @@
   width: 100%;
 }
 .ps-title {
-  margin-bottom: $size-7;
+  margin-bottom: $size-6;
 }
 .ps-type {
   margin-bottom: $size-0;
 }
 .ps-tech {
-  margin-bottom: $size-5;
+  margin-bottom: $size-6;
 }
 .ps-summary {
   margin-bottom: $size-7;

@@ -1,13 +1,34 @@
 import * as React from 'react';
 import Head from 'next/head';
 import Project from '../components/project';
-import Technology from '../models/Technology';
+import ProjectSummary from '../models/ProjectSummary';
+
 import '../styles/styles.scss';
 
-class Home extends React.Component {
+interface HomeProps {
+  projects: Array<ProjectSummary>;
+  error?: object;
+}
+class Home extends React.Component<HomeProps> {
+  static async getInitialProps(): Promise<HomeProps> {
+    try {
+      const res = await fetch('http://localhost:8080/v1/projects');
+      const data = await res.json();
+
+      if (res.status == 200) {
+        return {
+          projects: data.content,
+        };
+      } else {
+        return { projects: [] };
+      }
+    } catch (err) {
+      console.log(err);
+      return { projects: [], error: err };
+    }
+  }
   render(): JSX.Element {
-    const projectDate: Date = new Date();
-    const technologies: Array<Technology> = [{ name: 'React' }, { name: 'JavaScript' }];
+    const { projects } = this.props;
     return (
       <div>
         <Head>
@@ -19,24 +40,18 @@ class Home extends React.Component {
         </Head>
 
         <div className="ps-table">
-          <Project
-            name="Test Project Super Nova, Hack"
-            imageUrl="https://www.filtelescu.com/img/SmartHomeProPic.png"
-            projectType="Personal"
-            technologies={technologies}
-            summary="This is a test summary..."
-            projectDate={projectDate}
-            selfLink="https://localhost:8080/projects/test-project"
-          />
-          <Project
-            name="Test Project Super Nova, Hack"
-            imageUrl="https://www.filtelescu.com/img/SmartHomeProPic.png"
-            projectType="Personal"
-            technologies={technologies}
-            summary="This is a test summary..."
-            projectDate={projectDate}
-            selfLink="https://localhost:8080/projects/test-project"
-          />
+          {projects.map(project => (
+            <Project
+              key={project.slug}
+              name={project.name}
+              imageUrl={project.imageUrl}
+              projectType={project.projectType}
+              technologies={project.technologies}
+              summary={project.summary}
+              projectDate={new Date(project.projectDate)}
+              selfLink="https://localhost:8080/projects/test-project"
+            />
+          ))}
         </div>
       </div>
     );
