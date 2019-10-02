@@ -1,9 +1,7 @@
 import * as React from 'react';
-import Head from 'next/head';
-import Project from '../components/project';
+import Project from '../components/projectSummary';
 import ProjectSummary from '../models/ProjectSummary';
-
-import '../styles/styles.scss';
+import MyHead from '../components/myHead';
 
 interface HomeProps {
   projects: Array<ProjectSummary>;
@@ -31,13 +29,7 @@ class Home extends React.Component<HomeProps> {
     const { projects } = this.props;
     return (
       <div>
-        <Head>
-          <title>Home</title>
-          <link
-            href="https://fonts.googleapis.com/css?family=Roboto:400,400i,700,700i&display=swap"
-            rel="stylesheet"
-          ></link>
-        </Head>
+        <MyHead title="Home" />
 
         <div className="ps-table">
           {projects.map(project => (
@@ -49,7 +41,7 @@ class Home extends React.Component<HomeProps> {
               technologies={project.technologies}
               summary={project.summary}
               projectDate={new Date(project.projectDate)}
-              selfLink="https://localhost:8080/projects/test-project"
+              slug={project.slug}
             />
           ))}
         </div>

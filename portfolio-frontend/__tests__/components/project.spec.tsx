@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import * as renderer from 'react-test-renderer';
-import Project from '../../components/project';
+import ProjectSummary from '../../components/projectSummary';
 import Technology from '../../models/Technology';
 
 describe('Component', () => {
@@ -11,12 +11,14 @@ describe('Component', () => {
       const technologies: Array<Technology> = [{ name: 'React' }];
       const project = renderer
         .create(
-          <Project
+          <ProjectSummary
             name="Test"
             imageUrl="image.url"
             projectType="Personal"
+            summary="This is a test summary..."
             technologies={technologies}
             projectDate={projectDate}
+            slug="test-slug"
           />,
         )
         .toJSON();
@@ -30,12 +32,14 @@ describe('Component', () => {
       const projectDate: Date = new Date();
       const technologies: Array<Technology> = [{ name: 'React' }];
       const wrap = mount(
-        <Project
+        <ProjectSummary
           name="Test"
           imageUrl="image.url"
           projectType="Personal"
+          summary="This is a test summary..."
           technologies={technologies}
           projectDate={projectDate}
+          slug="test-slug"
         />,
       );
       expect(wrap.find('div').text()).toBe('TestPersonal - 2019');

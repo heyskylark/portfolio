@@ -1,17 +1,17 @@
 import * as React from 'react';
 import Technology from '../models/Technology';
 
-interface ProjectProps {
+interface ProjectSummaryProps {
   name: string;
   imageUrl: string;
   projectType: string;
   technologies: Array<Technology>;
   summary?: string;
   projectDate: Date;
-  selfLink: string;
+  slug: string;
 }
 
-class Project extends React.Component<ProjectProps> {
+class ProjectSummary extends React.Component<ProjectSummaryProps> {
   render(): JSX.Element {
     const { name, imageUrl, projectType, technologies, summary, projectDate } = this.props;
     return (
@@ -43,4 +43,4 @@ class Project extends React.Component<ProjectProps> {
   }
 }
 
-export default Project;
+export default ProjectSummary;
