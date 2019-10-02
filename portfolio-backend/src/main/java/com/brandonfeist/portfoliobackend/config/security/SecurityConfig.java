@@ -1,6 +1,8 @@
 package com.brandonfeist.portfoliobackend.config.security;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -12,8 +14,14 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
+import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -48,7 +56,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Bean
   public PasswordEncoder passwordEncoder() {
     if (passwordEncoder == null) {
-      passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+      String idForEncode = "bcrypt";
+      Map<String, PasswordEncoder> encoders = new HashMap<>();
+      encoders.put(idForEncode, new BCryptPasswordEncoder());
+      encoders.put("pbkdf2", new Pbkdf2PasswordEncoder());
+      encoders.put("scrypt", new SCryptPasswordEncoder());
+
+      passwordEncoder = new DelegatingPasswordEncoder(idForEncode, encoders);
     }
     return passwordEncoder;
   }
