@@ -50,20 +50,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     return super.authenticationManagerBean();
   }
 
+  /**
+   * Custom password encoder that can encode in bcrypt, pbkdf2, and scrypt.
+   */
   @Bean
-  public PasswordEncoder passwordEncoder() {
+  private PasswordEncoder passwordEncoder() {
     if (passwordEncoder == null) {
       String idForEncode = "bcrypt";
       Map<String, PasswordEncoder> encoders = new HashMap<>();
       encoders.put(idForEncode, new BCryptPasswordEncoder());
       encoders.put("pbkdf2", new Pbkdf2PasswordEncoder());
       encoders.put("scrypt", new SCryptPasswordEncoder());
-
       passwordEncoder = new DelegatingPasswordEncoder(idForEncode, encoders);
     }
     return passwordEncoder;
   }
 
+  /**
+   * Sets the data source (jbdc database) for the user details service.
+   */
   @Bean
   public UserDetailsService userDetailsService() {
     if (userDetailsService == null) {

@@ -42,6 +42,9 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
   private JwtAccessTokenConverter jwtAccessTokenConverter;
   private TokenStore tokenStore;
 
+  /**
+   * Authorization Server Configuration dependencies constructor.
+   */
   @Autowired
   public AuthorizationServerConfiguration(final DataSource dataSource,
                                           final PasswordEncoder passwordEncoder,
@@ -55,6 +58,11 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     this.userDetailsService = userDetailsService;
   }
 
+  /**
+   * Token Store, does not actually persist the token after sending to the client.
+   *
+   * @return a JwtTokenStore with a jwt token converter.
+   */
   @Bean
   public TokenStore tokenStore() {
     if (tokenStore == null) {
@@ -63,6 +71,9 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     return tokenStore;
   }
 
+  /**
+   * The token service is customized to include refresh tokens in the token passed to the client.
+   */
   @Bean
   public DefaultTokenServices tokenServices(final TokenStore tokenStore,
                                             final ClientDetailsService clientDetailsService) {
@@ -74,8 +85,11 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     return tokenServices;
   }
 
+  /**
+   * Creates a jwt converter converting the token using the keyPair and public key.
+   */
   @Bean
-  public JwtAccessTokenConverter jwtAccessTokenConverter() {
+  private JwtAccessTokenConverter jwtAccessTokenConverter() {
     if (jwtAccessTokenConverter != null) {
       return jwtAccessTokenConverter;
     }
@@ -86,6 +100,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     jwtAccessTokenConverter = new JwtAccessTokenConverter();
     jwtAccessTokenConverter.setKeyPair(keyPair);
     jwtAccessTokenConverter.setVerifierKey(getPublicKeyAsString());
+
     return jwtAccessTokenConverter;
   }
 
@@ -99,7 +114,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     final Map<String, CorsConfiguration> corsConfigMap = new HashMap<>();
     CorsConfiguration config = new CorsConfiguration();
     config.setAllowCredentials(true);
-    //TODO: Make configurable
+    // TODO: Make configurable
     config.setAllowedOrigins(Collections.singletonList("*"));
     config.setAllowedMethods(Collections.singletonList("*"));
     config.setAllowedHeaders(Collections.singletonList("*"));
