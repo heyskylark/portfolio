@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Router from 'next/router';
 import MyHead from '../components/myHead';
 import { login } from '../utils/auth';
 import BackendError from '../models/BackendError';
@@ -25,6 +26,7 @@ class Login extends React.Component<{}, LoginState> {
   async handleSubmit(event: React.FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
     const { username, password } = this.state;
+    // TODO - change this url to be variable depending on env
     const url = 'http://localhost:8080/oauth/token';
     const formData = new URLSearchParams();
     formData.append('grant_type', 'password');
@@ -43,10 +45,10 @@ class Login extends React.Component<{}, LoginState> {
       const response = await fetch(url, request);
       if (response.ok) {
         login(await response.json());
+        Router.push('/');
       } else {
         // https://github.com/developit/unfetch#caveats
         const error = (await response.json()) as BackendError;
-        console.log('Login failed: ', error);
         return Promise.reject(error.error_description);
       }
     } catch (error) {

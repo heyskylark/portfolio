@@ -1,4 +1,5 @@
 import * as React from 'react';
+import fetch from 'isomorphic-unfetch';
 import Project from '../components/projectSummary';
 import ProjectSummary from '../models/ProjectSummary';
 import MyHead from '../components/myHead';
