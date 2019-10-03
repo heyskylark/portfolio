@@ -1,11 +1,14 @@
 package com.brandonfeist.portfoliobackend.config.security;
 
-import java.io.IOException;
-import java.security.KeyPair;
-import java.security.Signer;
-import javax.sql.DataSource;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 import io.micrometer.core.instrument.util.IOUtils;
+import java.io.IOException;
+import java.security.KeyPair;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -24,8 +27,7 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
+import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 @EnableAuthorizationServer
@@ -94,10 +96,21 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
   @Override
   public void configure(final AuthorizationServerEndpointsConfigurer endpoints) {
+    final Map<String, CorsConfiguration> corsConfigMap = new HashMap<>();
+    CorsConfiguration config = new CorsConfiguration();
+    config.setAllowCredentials(true);
+    //TODO: Make configurable
+    config.setAllowedOrigins(Collections.singletonList("*"));
+    config.setAllowedMethods(Collections.singletonList("*"));
+    config.setAllowedHeaders(Collections.singletonList("*"));
+    corsConfigMap.put("/oauth/token", config);
+
     endpoints.authenticationManager(this.authenticationManager)
         .accessTokenConverter(jwtAccessTokenConverter())
         .userDetailsService(this.userDetailsService)
-        .tokenStore(tokenStore());
+        .tokenStore(tokenStore())
+        .getFrameworkEndpointHandlerMapping()
+        .setCorsConfigurations(corsConfigMap);
   }
 
   @Override

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import MyHead from '../components/myHead';
 import { login } from '../utils/auth';
+import BackendError from '../models/BackendError';
 
 interface LoginState {
   username: string;
@@ -23,28 +24,34 @@ class Login extends React.Component<{}, LoginState> {
   }
   async handleSubmit(event: React.FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
-    const username = this.state.username;
-    const password = this.state.password;
+    const { username, password } = this.state;
+    const url = 'http://localhost:8080/oauth/token';
+    const formData = new URLSearchParams();
+    formData.append('grant_type', 'password');
+    formData.append('username', username);
+    formData.append('password', password);
+    const request = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: 'Basic dGVzdENsaWVudDp0ZXN0cGFzc3dvcmQ=',
+      },
+      body: formData,
+    };
 
     try {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username }),
-      });
+      const response = await fetch(url, request);
       if (response.ok) {
-        const { token } = await response.json();
-        login({ token });
+        login(await response.json());
       } else {
-        console.log('Login failed.');
         // https://github.com/developit/unfetch#caveats
-        const error = new Error(response.statusText);
-        error.response = response;
-        return Promise.reject(error);
+        const error = (await response.json()) as BackendError;
+        console.log('Login failed: ', error);
+        return Promise.reject(error.error_description);
       }
     } catch (error) {
       console.error('You have an error in your code or there are Network issues.', error);
-      throw new Error(error);
+      // throw new Error(error);
     }
   }
   render(): JSX.Element {

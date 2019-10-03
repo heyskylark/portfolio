@@ -1,22 +1,55 @@
 @import 'foundation/_systems';
 
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+/* Remove default margin */
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+ul[class],
+ol[class],
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+/* Set core body defaults */
 body {
-  margin: 0;
-  color: $grey-0;
   background-color: $grey-9;
+  color: $grey-0;
   font-family: 'Roboto', sans-serif;
+  line-height: 1.5;
+  text-rendering: optimizeSpeed;
 }
-h1 {
-  margin: 0;
+/* Make images easier to work with */
+img {
+  display: block;
+  max-width: 100%;
 }
-h2 {
-  margin: 0;
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+  font: inherit;
 }
-h3 {
-  margin: 0;
-}
-p {
-  margin: 0;
+/* Remove _all_ animations and transitions for people that prefer not to see them */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-play-state: paused !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 @import 'components/projects';
