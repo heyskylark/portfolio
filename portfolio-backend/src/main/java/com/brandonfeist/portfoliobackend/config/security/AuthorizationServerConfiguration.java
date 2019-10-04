@@ -89,7 +89,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
    * Creates a jwt converter converting the token using the keyPair and public key.
    */
   @Bean
-  private JwtAccessTokenConverter jwtAccessTokenConverter() {
+  public JwtAccessTokenConverter jwtAccessTokenConverter() {
     if (jwtAccessTokenConverter != null) {
       return jwtAccessTokenConverter;
     }
@@ -106,6 +106,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
   @Override
   public void configure(final ClientDetailsServiceConfigurer clients) throws Exception {
+    // TODO Figure out if were going ot use auth code or password with no client_secret
     clients.jdbc(this.dataSource);
   }
 

@@ -54,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
    * Custom password encoder that can encode in bcrypt, pbkdf2, and scrypt.
    */
   @Bean
-  private PasswordEncoder passwordEncoder() {
+  public PasswordEncoder passwordEncoder() {
     if (passwordEncoder == null) {
       String idForEncode = "bcrypt";
       Map<String, PasswordEncoder> encoders = new HashMap<>();
@@ -78,8 +78,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     return userDetailsService;
   }
 
+  /**
+   * CORS config, needs to be changed eventually. Right now it just lets everything through.
+   */
   @Bean
-  CorsConfigurationSource corsConfigurationSource() {
+  public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.setAllowedOrigins(Collections.singletonList("*"));
     configuration.setAllowedMethods(Collections.singletonList("*"));

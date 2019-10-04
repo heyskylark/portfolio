@@ -18,11 +18,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.brandonfeist.portfoliobackend.PortfolioBackendApplication;
 import com.brandonfeist.portfoliobackend.models.ProjectInputModel;
 import com.brandonfeist.portfoliobackend.models.assemblers.ProjectResourceAssembler;
 import com.brandonfeist.portfoliobackend.models.assemblers.ProjectSummaryResourceAssembler;
 import com.brandonfeist.portfoliobackend.models.domain.Project;
 import com.brandonfeist.portfoliobackend.services.IProjectService;
+import com.brandonfeist.portfoliobackend.utils.AuthTestUtils;
 import com.brandonfeist.portfoliobackend.utils.ProjectTestUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -32,11 +34,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
@@ -44,18 +47,23 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.server.ResponseStatusException;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(ProjectController.class)
+@WebAppConfiguration
 @Import({
     ProjectResourceAssembler.class,
     ProjectSummaryResourceAssembler.class,
     ProjectTestUtils.class
 })
+@SpringBootTest(classes = PortfolioBackendApplication.class)
 public class ProjectControllerTest {
 
   private static final String MOCK_MVC_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
@@ -65,8 +73,14 @@ public class ProjectControllerTest {
       new MediaType("application", "json", java.nio.charset.Charset.forName("UTF-8"));
 
   private static ObjectMapper objectMapper;
+  private static String accessToken;
 
   @Autowired
+  private WebApplicationContext wac;
+
+  @Autowired
+  private FilterChainProxy springSecurityFilterChain;
+
   private MockMvc mockMvc;
 
   @Autowired
@@ -84,6 +98,16 @@ public class ProjectControllerTest {
     DateFormat dateFormat = new SimpleDateFormat(MOCK_MVC_DATE_FORMAT);
     dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
     objectMapper = new ObjectMapper().setDateFormat(dateFormat);
+  }
+
+  /**
+   * This setup builds a MockMvc for each test as well as creates an OAuth token.
+   */
+  @Before
+  public void setup() throws Exception {
+    this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac)
+        .addFilter(springSecurityFilterChain).build();
+    accessToken = AuthTestUtils.obtainAccessToken(mockMvc,"testuser", "testpassword");
   }
 
   @Test
@@ -142,6 +166,7 @@ public class ProjectControllerTest {
     when(projectService.createProject(any(ProjectInputModel.class)))
         .thenReturn(projectTestUtils.createTestProject());
     this.mockMvc.perform(post(PROJECT_ENDPOINT)
+        .header("Authorization", "Bearer " + accessToken)
         .contentType(MEDIA_TYPE_JSON_UTF8)
         .content(objectMapper.writeValueAsString(
             projectTestUtils.createTestProjectInputModel("Test project"))))
@@ -151,10 +176,21 @@ public class ProjectControllerTest {
   }
 
   @Test
+  public void whenCreateProjectWithNoAuth_return401() throws Exception {
+    this.mockMvc.perform(post(PROJECT_ENDPOINT)
+        .contentType(MEDIA_TYPE_JSON_UTF8)
+        .content(objectMapper.writeValueAsString(
+            projectTestUtils.createTestProjectInputModel("Test project"))))
+        .andDo(print())
+        .andExpect(status().isUnauthorized());
+  }
+
+  @Test
   public void whenCreateProjectWithInvalidProjectResource_throwBadRequest() throws Exception {
     ProjectInputModel badProject = projectTestUtils.createTestProjectInputModel(null);
 
     this.mockMvc.perform(post(PROJECT_ENDPOINT)
+        .header("Authorization", "Bearer " + accessToken)
         .contentType(MEDIA_TYPE_JSON_UTF8)
         .content(objectMapper.writeValueAsString(badProject)))
         .andDo(print())
@@ -168,6 +204,7 @@ public class ProjectControllerTest {
     when(projectService.updateProject(anyString(), any(ProjectInputModel.class)))
         .thenReturn(projectTestUtils.createTestProject());
     this.mockMvc.perform(put(PROJECT_ENDPOINT + "/" + TEST_SLUG)
+        .header("Authorization", "Bearer " + accessToken)
         .contentType(MEDIA_TYPE_JSON_UTF8)
         .content(objectMapper.writeValueAsString(
             projectTestUtils.createTestProjectInputModel("Test project"))))
@@ -176,11 +213,22 @@ public class ProjectControllerTest {
   }
 
   @Test
+  public void whenUpdateProjectWithNoAuth_return401() throws Exception {
+    this.mockMvc.perform(put(PROJECT_ENDPOINT + "/" + TEST_SLUG)
+        .contentType(MEDIA_TYPE_JSON_UTF8)
+        .content(objectMapper.writeValueAsString(
+            projectTestUtils.createTestProjectInputModel("Test project"))))
+        .andDo(print())
+        .andExpect(status().isUnauthorized());
+  }
+
+  @Test
   public void whenUpdateProjectWithInvalidSlug_return404() throws Exception {
     when(projectService.updateProject(anyString(), any(ProjectInputModel.class)))
         .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,
         "Project with slug [" + TEST_SLUG + "] was not found."));
     final MvcResult mvcResult = this.mockMvc.perform(put(PROJECT_ENDPOINT + "/" + TEST_SLUG)
+        .header("Authorization", "Bearer " + accessToken)
         .contentType(MEDIA_TYPE_JSON_UTF8)
         .content(objectMapper.writeValueAsString(
             projectTestUtils.createTestProjectInputModel("Test project"))))
@@ -200,6 +248,7 @@ public class ProjectControllerTest {
     ProjectInputModel badProject = projectTestUtils.createTestProjectInputModel(null);
 
     this.mockMvc.perform(put(PROJECT_ENDPOINT + "/" + TEST_SLUG)
+        .header("Authorization", "Bearer " + accessToken)
         .contentType(MEDIA_TYPE_JSON_UTF8)
         .content(objectMapper.writeValueAsString(badProject)))
         .andDo(print())
@@ -209,9 +258,17 @@ public class ProjectControllerTest {
   @Test
   public void whenDeleteProjectWithValidSlug_return204() throws Exception {
     doNothing().when(projectService).deleteProject(anyString());
-    this.mockMvc.perform(delete(PROJECT_ENDPOINT + "/" + TEST_SLUG))
+    this.mockMvc.perform(delete(PROJECT_ENDPOINT + "/" + TEST_SLUG)
+        .header("Authorization", "Bearer " + accessToken))
         .andDo(print())
         .andExpect(status().isNoContent());
+  }
+
+  @Test
+  public void whenDeleteWithNoAuth_return401() throws Exception {
+    this.mockMvc.perform(delete(PROJECT_ENDPOINT + "/" + TEST_SLUG))
+        .andDo(print())
+        .andExpect(status().isUnauthorized());
   }
 
   @Test
@@ -219,7 +276,8 @@ public class ProjectControllerTest {
     doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,
         "Project with slug [" + TEST_SLUG + "] was not found."))
         .when(projectService).deleteProject(TEST_SLUG);
-    final MvcResult mvcResult = this.mockMvc.perform(delete(PROJECT_ENDPOINT + "/" + TEST_SLUG))
+    final MvcResult mvcResult = this.mockMvc.perform(delete(PROJECT_ENDPOINT + "/" + TEST_SLUG)
+        .header("Authorization", "Bearer " + accessToken))
         .andDo(print())
         .andExpect(status().isNotFound())
         .andReturn();
