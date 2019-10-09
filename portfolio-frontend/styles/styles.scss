@@ -43,6 +43,14 @@ textarea,
 select {
   font: inherit;
 }
+
+.block {
+  display: block;
+}
+.none {
+  display: none;
+}
+
 /* Remove _all_ animations and transitions for people that prefer not to see them */
 @media (prefers-reduced-motion: reduce) {
   * {
@@ -52,4 +60,5 @@ select {
   }
 }
 
+@import 'components/navbar';
 @import 'components/projects';

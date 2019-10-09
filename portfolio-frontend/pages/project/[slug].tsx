@@ -37,21 +37,24 @@ class Project extends React.Component<ProjectDescriptionProps & WithRouterProps>
     const projectTitle = `${name} | Projects`;
 
     return (
-      <div className="pd-container">
+      <div>
         <MyHead title={projectTitle} />
-        <header className="pd-header">
-          <h2 className="pd-type fs-3 fc-terit fw-normal">
-            {formatDate(projectDate)} &middot; {projectType}
-          </h2>
-          <h1 className="pd-title fs-8 fw-heavy fs-wide">{name}</h1>
-          <div className="pd-img-container">
-            <img className="ps-img" src={imageUrl} alt={`Image of ${name}`}></img>
-          </div>
-        </header>
-        <section
-          className="pd-writeup-container"
-          dangerouslySetInnerHTML={{ __html: description }}
-        />
+
+        <div className="pd-container">
+          <header className="pd-header">
+            <h2 className="pd-type fs-3 fc-terit fw-normal">
+              {formatDate(projectDate)} &middot; {projectType}
+            </h2>
+            <h1 className="pd-title fs-8 fw-heavy fs-wide">{name}</h1>
+            <div className="pd-img-container">
+              <img className="ps-img" src={imageUrl} alt={`Image of ${name}`}></img>
+            </div>
+          </header>
+          <section
+            className="pd-writeup-container"
+            dangerouslySetInnerHTML={{ __html: description }}
+          />
+        </div>
       </div>
     );
   }
