@@ -30,6 +30,7 @@ body {
   font-family: 'Roboto', sans-serif;
   line-height: 1.5;
   text-rendering: optimizeSpeed;
+  width: 100%;
 }
 /* Make images easier to work with */
 img {
@@ -49,6 +50,9 @@ select {
 }
 .none {
   display: none;
+}
+.fixed {
+  position: fixed;
 }
 
 /* Remove _all_ animations and transitions for people that prefer not to see them */

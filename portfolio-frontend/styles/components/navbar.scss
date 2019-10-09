@@ -1,6 +1,28 @@
 .navbar {
+  display: block;
+}
+.mn-header {
   align-items: center;
   display: flex;
   justify-content: space-between;
   padding: 1.5rem 1.5rem;
+}
+.mn-button {
+  background: transparent;
+  border: 0;
+}
+.mn-menu-table {
+  background-color: $grey-9;
+  height: 100%;
+  position: fixed;
+  width: 100%;
+  z-index: 10;
+}
+.mn-menu-container {
+  padding: 1.5rem 3rem 1.5rem 3rem;
+}
+.mn-link {
+  color: $grey-0;
+  margin-bottom: 2rem;
+  text-decoration: none;
 }
