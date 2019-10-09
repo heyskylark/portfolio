@@ -1,3 +1,35 @@
+/* Full Project Description */
+.pd-container {
+  padding: 1.5rem 1.5rem;
+}
+.pd-header {
+  text-align: center;
+}
+.pd-type {
+  margin-bottom: $size-7;
+}
+.pd-title {
+  margin-bottom: $size-10;
+  text-transform: uppercase;
+}
+.pd-img-container {
+  margin-bottom: $size-8;
+}
+.pd-writeup-container {
+  h2 {
+    font-size: $size-5;
+    margin-bottom: $size-0;
+  }
+  p {
+    display: block;
+    margin-bottom: $size-8;
+  }
+  img {
+    margin-bottom: $size-8;
+  }
+}
+
+/* Project Summary */
 .ps-table {
   padding: 1.5rem 1.5rem;
   // background: linear-gradient(110deg, #fdcd3b 60%, #ffed4b 60%);
@@ -12,14 +44,12 @@
   width: 100%;
 }
 .ps-title {
-  margin-bottom: $size-6;
+  margin-bottom: $size-3;
+  text-transform: uppercase;
 }
 .ps-type {
-  margin-bottom: $size-0;
+  margin-bottom: $size-7;
 }
 .ps-tech {
-  margin-bottom: $size-6;
-}
-.ps-summary {
-  margin-bottom: $size-7;
+  margin-bottom: $size-0;
 }

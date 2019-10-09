@@ -1,4 +1,6 @@
 import * as React from 'react';
+import Link from 'next/link';
+import { formatDate, compileTechnologies } from '../utils/projectUtils';
 import Technology from '../models/Technology';
 
 interface ProjectSummaryProps {
@@ -13,33 +15,26 @@ interface ProjectSummaryProps {
 
 class ProjectSummary extends React.Component<ProjectSummaryProps> {
   render(): JSX.Element {
-    const { name, imageUrl, projectType, technologies, summary, projectDate } = this.props;
+    const { name, imageUrl, projectType, technologies, projectDate, slug } = this.props;
+    const projectLink = `/project/${slug}`;
     return (
       <div className="ps-container">
         <div>
-          <h1 className="ps-title fs-7">{name}</h1>
-          <h2 className="ps-type fs-5 fw-heavy fc-second">
-            {projectType} - {projectDate.getFullYear()}
+          <Link href={projectLink}>
+            <h1 className="ps-title fs-7 fw-heavy fs-wide">{name}</h1>
+          </Link>
+          <h3 className="ps-tech fs-3 fc-terit fw-normal">{compileTechnologies(technologies)}</h3>
+          <h2 className="ps-type fs-3 fc-terit fw-normal">
+            {formatDate(projectDate)} &middot; {projectType}
           </h2>
-          <h3 className="ps-tech fs-4 fw-normal fc-second">
-            {this.compileTechnologies(technologies)}
-          </h3>
-          {summary ? <p className="ps-summary fs-4 fc-terit">{summary}</p> : ''}
         </div>
         <div className="ps-img-container">
-          <img className="ps-img" src={imageUrl} alt={`Preview of ${name}`}></img>
+          <Link href={projectLink}>
+            <img className="ps-img" src={imageUrl} alt={`Preview of ${name}`}></img>
+          </Link>
         </div>
       </div>
     );
-  }
-
-  private compileTechnologies(technologies: Array<Technology>): string {
-    let techString = '';
-    for (let i = 0; i < technologies.length; i++) {
-      techString +=
-        i !== technologies.length - 1 ? `${technologies[i].name} - ` : technologies[i].name;
-    }
-    return techString;
   }
 }
 
