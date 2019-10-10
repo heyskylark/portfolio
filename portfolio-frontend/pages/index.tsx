@@ -1,8 +1,9 @@
 import * as React from 'react';
 import fetch from 'isomorphic-unfetch';
-import Project from '../components/projectSummary';
 import ProjectSummary from '../models/ProjectSummary';
 import MyHead from '../components/myHead';
+import Splash from '../components/splash';
+import ProjectsTable from '../components/projectsTable';
 
 interface HomeProps {
   projects: Array<ProjectSummary>;
@@ -31,21 +32,8 @@ class Home extends React.Component<HomeProps> {
     return (
       <div>
         <MyHead title="Home" />
-
-        <div className="ps-table">
-          {projects.map(project => (
-            <Project
-              key={project.slug}
-              name={project.name}
-              imageUrl={project.imageUrl}
-              projectType={project.projectType}
-              technologies={project.technologies}
-              summary={project.summary}
-              projectDate={new Date(project.projectDate)}
-              slug={project.slug}
-            />
-          ))}
-        </div>
+        <Splash />
+        <ProjectsTable projects={projects} />
       </div>
     );
   }

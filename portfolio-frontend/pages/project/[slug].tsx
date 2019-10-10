@@ -16,6 +16,7 @@ class Project extends React.Component<ProjectDescriptionProps & WithRouterProps>
   }): Promise<ProjectDescriptionProps> {
     const { slug } = router.query;
     try {
+      // TODO change url to be variable
       const res = await fetch(`http://localhost:8080/v1/projects/${slug}`);
       const data = await res.json();
 

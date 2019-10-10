@@ -45,6 +45,10 @@ select {
   font: inherit;
 }
 
+.container {
+  padding: 1.5rem 1.5rem;
+}
+
 .block {
   display: block;
 }
@@ -65,4 +69,5 @@ select {
 }
 
 @import 'components/navbar';
+@import 'components/splash';
 @import 'components/projects';

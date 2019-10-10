@@ -7,6 +7,21 @@
   justify-content: space-between;
   padding: 1.5rem 1.5rem;
 }
+.mn-logo {
+  display: inline-block;
+  position: relative;
+  &::after {
+    background-color: #ffed4b;
+    bottom: 0;
+    content: ' ';
+    height: 50%;
+    left: 7px;
+    opacity: 1;
+    position: absolute;
+    width: calc(100%);
+    z-index: -1;
+  }
+}
 .mn-button {
   background: transparent;
   border: 0;

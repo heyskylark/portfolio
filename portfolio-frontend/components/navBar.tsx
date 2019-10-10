@@ -15,25 +15,14 @@ class NavBar extends React.Component<{}, NavBarState> {
       mobileMenuToggled: false,
     };
 
+    // TODO this is causing a memory leak on unmount and I need to fix it eventually
     // Need this to remove the body fixed class when changing pages
     // The fixed class was remaining after a page change
-    Router.events.on('routeChangeComplete', () => {
+    Router.events.on('routeChangeStart', () => {
       document.body.classList.remove('fixed');
       this.setState({
         mobileMenuToggled: false,
       });
-    });
-  }
-
-  private toggleMobileMenu(event: { preventDefault: () => void }): void {
-    event.preventDefault();
-    if (this.state.mobileMenuToggled) {
-      document.body.classList.remove('fixed');
-    } else {
-      document.body.classList.add('fixed');
-    }
-    this.setState({
-      mobileMenuToggled: !this.state.mobileMenuToggled,
     });
   }
 
@@ -47,7 +36,7 @@ class NavBar extends React.Component<{}, NavBarState> {
     return (
       <nav className="navbar">
         <div className="mn-header">
-          <div>
+          <div className="mn-logo">
             <Link href="/">
               <h1>Brandon Feist</h1>
             </Link>
@@ -98,6 +87,18 @@ class NavBar extends React.Component<{}, NavBarState> {
         </div>
       </nav>
     );
+  }
+
+  private toggleMobileMenu(event: { preventDefault: () => void }): void {
+    event.preventDefault();
+    if (this.state.mobileMenuToggled) {
+      document.body.classList.remove('fixed');
+    } else {
+      document.body.classList.add('fixed');
+    }
+    this.setState({
+      mobileMenuToggled: !this.state.mobileMenuToggled,
+    });
   }
 }
 
