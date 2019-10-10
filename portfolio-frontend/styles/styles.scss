@@ -32,6 +32,15 @@ body {
   text-rendering: optimizeSpeed;
   width: 100%;
 }
+
+a {
+  text-decoration: none;
+}
+
+p {
+  font-size: $size-4;
+}
+
 /* Make images easier to work with */
 img {
   display: block;

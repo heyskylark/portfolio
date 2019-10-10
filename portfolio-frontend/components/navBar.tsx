@@ -83,6 +83,9 @@ class NavBar extends React.Component<{}, NavBarState> {
             <Link href="/">
               <a className="mn-link fs-6 fw-heavy block">Contact</a>
             </Link>
+            <Link href="/">
+              <a className="mn-link fs-6 fw-heavy block">Github</a>
+            </Link>
           </div>
         </div>
       </nav>

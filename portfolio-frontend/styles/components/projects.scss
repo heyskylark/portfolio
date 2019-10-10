@@ -6,10 +6,11 @@
   text-align: center;
 }
 .pd-type {
-  margin-bottom: $size-7;
+  margin-bottom: $size-8;
 }
 .pd-title {
-  margin-bottom: $size-10;
+  line-height: 1;
+  margin-bottom: $size-9;
   text-transform: uppercase;
 }
 .pd-img-container {
@@ -18,7 +19,7 @@
 .pd-writeup-container {
   h2 {
     display: inline-block;
-    font-size: $size-5;
+    font-size: $size-6;
     margin-bottom: $size-0;
     position: relative;
     text-transform: uppercase;
@@ -36,7 +37,10 @@
   }
   p {
     display: block;
+    hyphens: auto;
+    line-height: 2;
     margin-bottom: $size-8;
+    text-align: justify;
   }
   img {
     margin-bottom: $size-8;
@@ -59,6 +63,7 @@
 }
 .ps-title {
   // display: inline-block;
+  line-height: 1.25;
   margin-bottom: $size-0;
   // position: relative;
   text-transform: uppercase;
