@@ -1,6 +1,18 @@
 .splash-container {
   background: linear-gradient(110deg, $grey-8 60%, #ffed4b 60%);
-  height: 65vh;
-  margin-bottom: $size-10;
-  padding: 1.5rem 1.5rem;
+  height: 400px;
+  margin-bottom: $size-9;
+  padding: 1.5rem 1rem;
+}
+.splash-header {
+  line-height: $size-10;
+  margin-bottom: $size-5;
+  text-decoration: underline;
+}
+.splash-text {
+  float: right;
+  width: 85%;
+  p {
+    margin-bottom: $size-1;
+  }
 }

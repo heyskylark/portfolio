@@ -59,7 +59,7 @@
 }
 .ps-title {
   // display: inline-block;
-  margin-bottom: $size-3;
+  margin-bottom: $size-0;
   // position: relative;
   text-transform: uppercase;
   // &::after {
@@ -73,6 +73,13 @@
   //   width: calc(100%);
   //   z-index: -1;
   // }
+}
+.ps-title-div {
+  background-color: $grey-0;
+  height: $size-0;
+  margin-bottom: $size-7;
+  margin-left: 1px;
+  width: 25%;
 }
 .ps-type {
   margin-bottom: $size-7;
