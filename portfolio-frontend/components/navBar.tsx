@@ -18,7 +18,7 @@ class NavBar extends React.Component<{}, NavBarState> {
     // TODO this is causing a memory leak on unmount and I need to fix it eventually
     // Need this to remove the body fixed class when changing pages
     // The fixed class was remaining after a page change
-    Router.events.on('routeChangeStart', () => {
+    Router.events.on('routeChangeComplete', () => {
       document.body.classList.remove('fixed');
       this.setState({
         mobileMenuToggled: false,
@@ -74,13 +74,13 @@ class NavBar extends React.Component<{}, NavBarState> {
             <Link href="/">
               <a className="mn-link fs-6 fw-heavy block">Home</a>
             </Link>
-            <Link href="/">
+            <Link href="/projects">
               <a className="mn-link fs-6 fw-heavy block">Projects</a>
             </Link>
-            <Link href="/">
+            <Link href="/about">
               <a className="mn-link fs-6 fw-heavy block">About</a>
             </Link>
-            <Link href="/">
+            <Link href="/contact">
               <a className="mn-link fs-6 fw-heavy block">Contact</a>
             </Link>
             <Link href="/">

@@ -3,6 +3,8 @@
   padding: 1.5rem 1.5rem;
 }
 .pd-header {
+  margin: 0 auto;
+  max-width: 35em;
   text-align: center;
 }
 .pd-type {
@@ -17,6 +19,8 @@
   margin-bottom: $size-10;
 }
 .pd-writeup-container {
+  margin: 0 auto;
+  max-width: 35em;
   h2 {
     display: inline-block;
     font-size: $size-6;
@@ -38,7 +42,7 @@
   p {
     display: block;
     hyphens: auto;
-    line-height: 2;
+    line-height: 1.75;
     margin-bottom: $size-8;
     text-align: justify;
   }
@@ -63,7 +67,7 @@
 }
 .ps-title {
   // display: inline-block;
-  line-height: 1.25;
+  line-height: 1;
   margin-bottom: $size-0;
   // position: relative;
   text-transform: uppercase;

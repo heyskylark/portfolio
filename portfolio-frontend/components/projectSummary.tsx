@@ -16,7 +16,7 @@ interface ProjectSummaryProps {
 class ProjectSummary extends React.Component<ProjectSummaryProps> {
   render(): JSX.Element {
     const { name, imageUrl, projectType, technologies, projectDate, slug } = this.props;
-    const projectLink = `/project/${slug}`;
+    const projectLink = `/projects/${slug}`;
     return (
       <div className="ps-container">
         <div>

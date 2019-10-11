@@ -1,8 +1,15 @@
 .splash-container {
+  align-items: center;
   background: linear-gradient(110deg, $grey-8 60%, #ffed4b 60%);
+  display: flex;
+  justify-content: center;
   min-height: 400px;
   margin-bottom: $size-9;
-  padding: 1.5rem 1rem;
+  padding: 1rem 1rem;
+}
+.splash-inner-container {
+  margin: 0 auto;
+  max-width: 500px;
 }
 .splash-header {
   line-height: 1;

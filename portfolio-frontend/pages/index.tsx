@@ -31,7 +31,7 @@ class Home extends React.Component<HomeProps> {
     const { projects } = this.props;
     return (
       <div>
-        <MyHead title="Home" />
+        <MyHead title="Brandon Feist" />
         <Splash />
         <ProjectsTable projects={projects} />
       </div>
