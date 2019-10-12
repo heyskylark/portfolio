@@ -1,22 +1,30 @@
 import * as React from 'react';
 import fetch from 'isomorphic-unfetch';
 import Router from 'next/router';
-import MyHead from '../components/myHead';
+import myHead from '../components/myHead';
 import { login } from '../utils/auth';
 import BackendError from '../models/BackendError';
 
+interface LoginProps {
+  title: string;
+}
 interface LoginState {
   username: string;
   password: string;
   error: string;
 }
 
-class Login extends React.Component<{}, LoginState> {
-  constructor(props: object) {
+class Login extends React.Component<LoginProps, LoginState> {
+  constructor(props: LoginProps) {
     super(props);
     this.state = { username: '', password: '', error: '' };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+  static getInitialProps(): LoginProps {
+    return {
+      title: 'Login',
+    };
   }
   handleChange(event: React.ChangeEvent<HTMLInputElement>): void {
     const result = {
@@ -60,7 +68,6 @@ class Login extends React.Component<{}, LoginState> {
   render(): JSX.Element {
     return (
       <div>
-        <MyHead title="Login" />
         <div>
           <form onSubmit={this.handleSubmit}>
             <h1>Log in to your account</h1>
@@ -90,4 +97,4 @@ class Login extends React.Component<{}, LoginState> {
   }
 }
 
-export default Login;
+export default myHead(Login);

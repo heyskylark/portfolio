@@ -1,15 +1,23 @@
 import * as React from 'react';
-import MyHead from '../../components/myHead';
+import myHead from '../../components/myHead';
+
+interface ProjectsProps {
+  title: string;
+}
 
 class Projects extends React.Component {
+  static getInitialProps(): ProjectsProps {
+    return {
+      title: 'My Projects',
+    };
+  }
   render(): JSX.Element {
     return (
       <div>
-        <MyHead title="Projects" />
         <p>This is the projects page.</p>
       </div>
     );
   }
 }
 
-export default Projects;
+export default myHead(Projects);

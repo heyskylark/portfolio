@@ -1,12 +1,13 @@
 import * as React from 'react';
 import fetch from 'isomorphic-unfetch';
 import { withRouter } from 'next/router';
-import MyHead from '../../components/myHead';
+import myHead from '../../components/myHead';
 import { WithRouterProps } from 'next/dist/client/with-router';
 import { formatDate } from '../../utils/projectUtils';
 import ProjectFull from '../../models/ProjectFull';
 
 interface ProjectDescriptionProps {
+  title: string;
   project: ProjectFull;
   error?: object;
 }
@@ -22,7 +23,9 @@ class Project extends React.Component<ProjectDescriptionProps & WithRouterProps>
       const data = await res.json();
 
       if (res.status == 200) {
+        const projectTitle = `${data.name} | Projects`;
         return {
+          title: projectTitle,
           project: data,
         };
       } else {
@@ -36,12 +39,9 @@ class Project extends React.Component<ProjectDescriptionProps & WithRouterProps>
   render(): JSX.Element {
     const { project } = this.props;
     const { name, description, projectType, imageUrl, projectDate } = project;
-    const projectTitle = `${name} | Projects`;
 
     return (
       <div>
-        <MyHead title={projectTitle} />
-
         <div className="pd-container">
           <header className="pd-header">
             <h2 className="pd-type fs-3 fc-terit fw-normal">
@@ -62,4 +62,4 @@ class Project extends React.Component<ProjectDescriptionProps & WithRouterProps>
   }
 }
 
-export default withRouter(Project);
+export default withRouter(myHead(Project));

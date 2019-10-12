@@ -1,11 +1,12 @@
 import * as React from 'react';
 import fetch from 'isomorphic-unfetch';
 import ProjectSummary from '../models/ProjectSummary';
-import MyHead from '../components/myHead';
+import myHead from '../components/myHead';
 import Splash from '../components/splash';
 import ProjectsTable from '../components/projectsTable';
 
 interface HomeProps {
+  title: string;
   projects: Array<ProjectSummary>;
   error?: object;
 }
@@ -17,21 +18,27 @@ class Home extends React.Component<HomeProps> {
 
       if (res.status == 200) {
         return {
+          title: 'Brandon Feist',
           projects: data.content,
         };
       } else {
-        return { projects: [] };
+        return {
+          title: 'Brandon Feist',
+          projects: [],
+        };
       }
     } catch (err) {
-      console.log(err);
-      return { projects: [], error: err };
+      return {
+        title: 'Brandon Feist',
+        projects: [],
+        error: err,
+      };
     }
   }
   render(): JSX.Element {
     const { projects } = this.props;
     return (
       <div>
-        <MyHead title="Brandon Feist" />
         <Splash />
         <ProjectsTable projects={projects} />
       </div>
@@ -39,4 +46,4 @@ class Home extends React.Component<HomeProps> {
   }
 }
 
-export default Home;
+export default myHead(Home);

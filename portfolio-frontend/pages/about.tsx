@@ -1,11 +1,19 @@
 import * as React from 'react';
-import MyHead from '../components/myHead';
+import myHead from '../components/myHead';
 
-class About extends React.Component {
+interface AboutProps {
+  title: string;
+}
+
+class About extends React.Component<AboutProps> {
+  static getInitialProps(): AboutProps {
+    return {
+      title: 'About Me',
+    };
+  }
   render(): JSX.Element {
     return (
       <div>
-        <MyHead title="About Me" />
         <div className="container">
           <div className="about-container">
             <img
@@ -36,4 +44,4 @@ class About extends React.Component {
   }
 }
 
-export default About;
+export default myHead(About);
