@@ -1,4 +1,5 @@
 import * as React from 'react';
+import fetch from 'isomorphic-unfetch';
 import { withRouter } from 'next/router';
 import MyHead from '../../components/myHead';
 import { WithRouterProps } from 'next/dist/client/with-router';

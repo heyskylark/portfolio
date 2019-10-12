@@ -1,4 +1,5 @@
 import * as React from 'react';
+import fetch from 'isomorphic-unfetch';
 import Router from 'next/router';
 import MyHead from '../components/myHead';
 import { login } from '../utils/auth';

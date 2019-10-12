@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Router } from 'next/router';
 import Link from 'next/link';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '../styles/styles.scss';
 
 interface NavBarState {
@@ -84,7 +85,14 @@ class NavBar extends React.Component<{}, NavBarState> {
               <a className="mn-link fs-6 fw-heavy block">Contact</a>
             </Link>
             <Link href="/">
-              <a className="mn-link fs-6 fw-heavy block">Github</a>
+              <a className="mn-link fs-6 fw-heavy block">
+                Github
+                <FontAwesomeIcon
+                  className="mn-external"
+                  icon={['fas', 'external-link-alt']}
+                  size="xs"
+                />
+              </a>
             </Link>
           </div>
         </div>
