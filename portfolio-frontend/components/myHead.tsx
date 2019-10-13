@@ -2,6 +2,7 @@ import * as React from 'react';
 import Head from 'next/head';
 import NavBar from './navBar';
 import { WithRouterProps } from 'next/dist/client/with-router';
+import { NextRouter } from 'next/router';
 import { library, config } from '@fortawesome/fontawesome-svg-core';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 
@@ -15,12 +16,10 @@ interface HeadProps {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const myHead = (C: any) => {
   class MyHead extends React.Component<HeadProps & WithRouterProps> {
-    static async getInitialProps(): Promise<object> {
+    static async getInitialProps(router: NextRouter): Promise<object> {
       let componentProps = {};
       if (typeof C.getInitialProps === 'function') {
-        componentProps = await C.getInitialProps(router: {
-          query: { slug: string };
-        });
+        componentProps = await C.getInitialProps(router);
       }
 
       return {

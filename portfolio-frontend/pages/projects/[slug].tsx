@@ -3,6 +3,7 @@ import fetch from 'isomorphic-unfetch';
 import { withRouter } from 'next/router';
 import myHead from '../../components/myHead';
 import { WithRouterProps } from 'next/dist/client/with-router';
+import { NextRouter } from 'next/router';
 import { formatDate } from '../../utils/projectUtils';
 import ProjectFull from '../../models/ProjectFull';
 
@@ -13,9 +14,7 @@ interface ProjectDescriptionProps {
 }
 
 class Project extends React.Component<ProjectDescriptionProps & WithRouterProps> {
-  static async getInitialProps(router: {
-    query: { slug: string };
-  }): Promise<ProjectDescriptionProps> {
+  static async getInitialProps(router: NextRouter): Promise<ProjectDescriptionProps> {
     const { slug } = router.query;
     try {
       // TODO change url to be variable
