@@ -7,6 +7,7 @@ import { library, config } from '@fortawesome/fontawesome-svg-core';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 
 import '../styles/styles.scss';
+import Footer from './footer';
 
 interface HeadProps {
   title: string;
@@ -42,6 +43,7 @@ const myHead = (C: any) => {
           </Head>
           <NavBar />
           <C {...this.props} />
+          <Footer />
         </div>
       );
     }

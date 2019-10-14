@@ -81,15 +81,24 @@ class NavBar extends React.Component<{}, NavBarState> {
             <Link href="/about">
               <a className="mn-link fs-6 fw-heavy block">About</a>
             </Link>
-            <Link href="/contact">
-              <a className="mn-link fs-6 fw-heavy block">Contact</a>
-            </Link>
             <a
               className="mn-link fs-6 fw-heavy block"
               href="https://www.github.com/brandonfeist"
               target="_blank"
             >
               Github
+              <FontAwesomeIcon
+                className="mn-external"
+                icon={['fas', 'external-link-alt']}
+                size="xs"
+              />
+            </a>
+            <a
+              className="mn-link fs-6 fw-heavy block"
+              href="mailto:feist.brandon@gmail.com"
+              target="_blank"
+            >
+              Email
               <FontAwesomeIcon
                 className="mn-external"
                 icon={['fas', 'external-link-alt']}
