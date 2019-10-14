@@ -11,14 +11,15 @@ interface ProjectSummaryProps {
   summary?: string;
   projectDate: Date;
   slug: string;
+  isLast: boolean;
 }
 
 class ProjectSummary extends React.Component<ProjectSummaryProps> {
   render(): JSX.Element {
-    const { name, imageUrl, projectType, technologies, projectDate, slug } = this.props;
+    const { name, imageUrl, projectType, technologies, projectDate, slug, isLast } = this.props;
     const projectLink = `/projects/${slug}`;
     return (
-      <div className="ps-container">
+      <div className={'ps-container' + (isLast ? ' margin-bt-1' : '')}>
         <div>
           <Link href={projectLink}>
             <h1 className="ps-title fs-7 fw-heavy">{name}</h1>

@@ -11,18 +11,22 @@ class ProjectsTable extends React.Component<ProjectsTableProps> {
     const { projects } = this.props;
     return (
       <div className="ps-table">
-        {projects.map(project => (
-          <Project
-            key={project.slug}
-            name={project.name}
-            imageUrl={project.imageUrl}
-            projectType={project.projectType}
-            technologies={project.technologies}
-            summary={project.summary}
-            projectDate={new Date(project.projectDate)}
-            slug={project.slug}
-          />
-        ))}
+        {projects.map((project, index) => {
+          const isLast = index === projects.length - 1;
+          return (
+            <Project
+              key={project.slug}
+              name={project.name}
+              imageUrl={project.imageUrl}
+              projectType={project.projectType}
+              technologies={project.technologies}
+              summary={project.summary}
+              projectDate={new Date(project.projectDate)}
+              slug={project.slug}
+              isLast={isLast}
+            />
+          );
+        })}
       </div>
     );
   }
