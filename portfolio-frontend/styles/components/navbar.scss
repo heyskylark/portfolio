@@ -11,15 +11,26 @@
   display: inline-block;
   position: relative;
   &::after {
-    background-color: #ffed4b;
+    background-color: $prime-y-7;
     bottom: 0;
     content: ' ';
     height: 50%;
     left: 7px;
     opacity: 1;
     position: absolute;
+    transition: all .15s ease-in-out;
     width: calc(100%);
     z-index: -1;
+  }
+  &:hover::after {
+    background-color: $prime-y-5;
+    left: -7.5px;
+    width: calc(100% + 17px);
+  }
+  a {
+    color: $grey-0;
+    font-size: $size-7;
+    text-decoration: none;
   }
 }
 .mn-button {

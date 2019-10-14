@@ -39,7 +39,7 @@ class NavBar extends React.Component<{}, NavBarState> {
         <div className="mn-header">
           <div className="mn-logo">
             <Link href="/">
-              <h1>Brandon Feist</h1>
+              <a className="fw-heavy">Brandon Feist</a>
             </Link>
           </div>
           <div>

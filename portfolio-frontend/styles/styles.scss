@@ -33,8 +33,29 @@ body {
   width: 100%;
 }
 
-a {
+a:not([class]) {
+  color: $grey-0;
+  font-weight: 700;
+  position: relative;
   text-decoration: none;
+  &::after {
+    background-color: $prime-y-7;
+    bottom: 0;
+    content: ' ';
+    display: block;
+    height: 50%;
+    left: 6px;
+    opacity: 1;
+    position: absolute;
+    transition: all .15s ease-in-out;
+    width: calc(100%);
+    z-index: -1;
+  }
+  &:hover::after {
+    background-color: $prime-y-5;
+    left: -7.5px;
+    width: calc(100% + 17px);
+  }
 }
 
 p {
@@ -73,7 +94,7 @@ select {
   position: relative;
   text-transform: uppercase;
   &::after {
-    background-color: #ffed4b;
+    background-color: $prime-y-5;
     bottom: 0;
     content: ' ';
     height: 50%;

@@ -38,7 +38,7 @@
     position: relative;
     text-transform: uppercase;
     &::after {
-      background-color: #ffed4b;
+      background-color: $prime-y-5;
       bottom: 0;
       content: ' ';
       height: 50%;
