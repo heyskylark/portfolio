@@ -67,6 +67,34 @@ select {
 .fixed {
   position: fixed;
 }
+.title-container {
+  display: inline-block;
+  margin: 0 1.5rem $size-2;
+  position: relative;
+  text-transform: uppercase;
+  &::after {
+    background-color: #ffed4b;
+    bottom: 0;
+    content: ' ';
+    height: 50%;
+    left: 7px;
+    opacity: 1;
+    position: absolute;
+    width: calc(100%);
+    z-index: -1;
+  }
+  h1,
+  h2 {
+    font-size: $size-8;
+  }
+}
+.border {
+  width: 100%;
+  padding: $size-4 1.5rem;
+}
+.border-inner {
+  border-bottom: 1px solid $grey-6;
+}
 
 /* Remove _all_ animations and transitions for people that prefer not to see them */
 @media (prefers-reduced-motion: reduce) {

@@ -21,7 +21,7 @@ class ProjectSummary extends React.Component<ProjectSummaryProps> {
       <div className="ps-container">
         <div>
           <Link href={projectLink}>
-            <h1 className="ps-title fs-7 fw-heavy fs-wide">{name}</h1>
+            <h1 className="ps-title fs-7 fw-heavy">{name}</h1>
           </Link>
           <div className="ps-title-div"></div>
           <h3 className="ps-tech fs-3 fc-terit fw-normal">{compileTechnologies(technologies)}</h3>

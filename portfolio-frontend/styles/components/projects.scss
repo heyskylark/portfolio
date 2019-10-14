@@ -1,3 +1,13 @@
+/* Project Page */
+.project-table-header {
+  padding: $size-2 1.5rem 0 1.5rem;
+  p {
+    display: block;
+    line-height: 2;
+    margin-bottom: 20px;
+  }
+}
+
 /* Full Project Description */
 .pd-container {
   padding: 1.5rem 1.5rem;
@@ -65,29 +75,16 @@
   width: 100%;
 }
 .ps-title {
-  // display: inline-block;
   line-height: 1;
   margin-bottom: $size-0;
-  // position: relative;
   text-transform: uppercase;
-  // &::after {
-  //   background-color: #ffed4b;
-  //   bottom: 0;
-  //   content: ' ';
-  //   height: 50%;
-  //   left: 7px;
-  //   opacity: 1;
-  //   position: absolute;
-  //   width: calc(100%);
-  //   z-index: -1;
-  // }
 }
 .ps-title-div {
   background-color: $grey-0;
   height: $size-0;
   margin-bottom: $size-7;
   margin-left: 1px;
-  width: 25%;
+  width: $size-10;
 }
 .ps-type {
   margin-bottom: $size-7;
