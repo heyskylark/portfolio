@@ -49,7 +49,7 @@ class Projects extends React.Component<ProjectsProps> {
           <p>This is a second paragraph since most likely I will have more than one paragraph.</p>
         </div>
         <div className="border">
-          <div className="border-inner"></div>
+          <div className="border__inner"></div>
         </div>
         <ProjectsTable projects={projects} />
       </div>

@@ -41,14 +41,14 @@ class Project extends React.Component<ProjectDescriptionProps & WithRouterProps>
 
     return (
       <div>
-        <div className="pd-container">
+        <div className="container">
           <header className="pd-header">
-            <h2 className="pd-type fs-3 fc-terit fw-normal">
+            <h2 className="pd-header__type fs-3 fc-terit fw-normal">
               {formatDate(projectDate)} &middot; {projectType}
             </h2>
-            <h1 className="pd-title fs-8 fw-heavy fs-wide">{name}</h1>
-            <div className="pd-img-container">
-              <img className="ps-img" src={imageUrl} alt={`Image of ${name}`}></img>
+            <h1 className="pd-header__title fs-8 fw-heavy fs-wide">{name}</h1>
+            <div className="pd-header__img-container">
+              <img className="pd-header__img" src={imageUrl} alt={`Image of ${name}`}></img>
             </div>
           </header>
           <section

@@ -1,58 +1,59 @@
 .navbar {
   display: block;
-}
-.mn-header {
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
-  padding: 1.5rem 1.5rem;
-}
-.mn-logo {
-  display: inline-block;
-  position: relative;
-  &::after {
-    background-color: $prime-y-7;
-    bottom: 0;
-    content: ' ';
-    height: 50%;
-    left: 7px;
-    opacity: 1;
-    position: absolute;
-    transition: all .15s ease-in-out;
-    width: calc(100%);
-    z-index: -1;
+
+  &__header {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    padding: 1.5rem 1.5rem;
   }
-  &:hover::after {
-    background-color: $prime-y-5;
-    left: -7.5px;
-    width: calc(100% + 17px);
+  &__logo {
+    display: inline-block;
+    position: relative;
+    &::after {
+      background-color: $prime-y-7;
+      bottom: 0;
+      content: ' ';
+      height: 50%;
+      left: 7px;
+      opacity: 1;
+      position: absolute;
+      transition: all .15s ease-in-out;
+      width: calc(100%);
+      z-index: -1;
+    }
+    &:hover::after {
+      background-color: $prime-y-5;
+      left: -7.5px;
+      width: calc(100% + 17px);
+    }
+    a {
+      color: $grey-0;
+      font-size: $size-7;
+      text-decoration: none;
+    }
   }
-  a {
-    color: $grey-0;
-    font-size: $size-7;
-    text-decoration: none;
+  &__mobile-button {
+    background: transparent;
+    border: 0;
   }
 }
-.mn-button {
-  background: transparent;
-  border: 0;
-}
-.mn-menu-table {
+.menu-table {
   background-color: $grey-9;
   height: 100%;
   position: fixed;
   width: 100%;
   z-index: 10;
-}
-.mn-menu-container {
-  padding: 1.5rem 3rem 1.5rem 3rem;
-}
-.mn-link {
-  color: $grey-0;
-  margin-bottom: 2rem;
-  text-decoration: none;
-}
-.mn-external {
-  margin-left: $size-2;
-  vertical-align: baseline !important;
+  &__container {
+    padding: 1.5rem 3rem 1.5rem 3rem;
+  }
+  &__link {
+    color: $grey-0;
+    margin-bottom: 2rem;
+    text-decoration: none;
+  }
+  &__external-icon {
+    margin-left: $size-2;
+    vertical-align: baseline !important;
+  }
 }

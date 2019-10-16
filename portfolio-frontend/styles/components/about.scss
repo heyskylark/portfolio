@@ -1,14 +1,14 @@
 .about-container {
   margin: 0 auto;
   max-width: $size-max-read-width;
-}
-.about-paragraph {
-  hyphens: auto;
-  line-height: 1.75;
-  margin-bottom: $size-8;
-  text-align: justify;
-}
-.about-img {
-  margin-bottom: $size-8;
-  width: 100%;
+  &__img {
+    margin-bottom: $size-8;
+    width: 100%;
+  }
+  &__paragraph {
+    hyphens: auto;
+    line-height: 1.75;
+    margin-bottom: $size-8;
+    text-align: justify;
+  }
 }

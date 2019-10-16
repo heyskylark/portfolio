@@ -5,10 +5,10 @@ class Footer extends React.Component {
     return (
       <div>
         <div className="border">
-          <div className="border-inner"></div>
+          <div className="border__inner"></div>
         </div>
         <footer className="footer">
-          <p className="footer-info">
+          <p className="footer__info">
             This website was built using{' '}
             <a href="https://nextjs.org" title="Link to Next.js website." target="_blank">
               Next.js
@@ -19,7 +19,7 @@ class Footer extends React.Component {
             </a>
             .
           </p>
-          <p className="footer-links">
+          <p className="footer__links">
             <a
               className="margin-rt-1"
               href="https://twitter.com/heyskylark"

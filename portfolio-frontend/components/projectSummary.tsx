@@ -22,20 +22,22 @@ class ProjectSummary extends React.Component<ProjectSummaryProps> {
       <div className={'ps-container' + (isLast ? ' margin-bt-1' : '')}>
         <div>
           <Link href={projectLink}>
-            <a className="ps-title fs-7 fw-heavy" title={`Link to ${name} writeup.`}>
+            <a className="ps-container__title fs-7 fw-heavy" title={`Link to ${name} writeup.`}>
               {name}
             </a>
           </Link>
-          <div className="ps-title-div"></div>
-          <h3 className="ps-tech fs-3 fc-terit fw-normal">{compileTechnologies(technologies)}</h3>
-          <h2 className="ps-type fs-3 fc-terit fw-normal">
+          <div className="ps-container__title-border"></div>
+          <h3 className="ps-container__tech fs-3 fc-terit fw-normal">
+            {compileTechnologies(technologies)}
+          </h3>
+          <h2 className="ps-container__type fs-3 fc-terit fw-normal">
             {formatDate(projectDate)} &middot; {projectType}
           </h2>
         </div>
-        <div className="ps-img-container">
+        <div className="ps-container__img-container">
           <Link href={projectLink}>
             <a title={`Link to ${name} writeup.`}>
-              <img className="ps-img" src={imageUrl} alt={`Preview of ${name}`}></img>
+              <img className="ps-container__img" src={imageUrl} alt={`Preview of ${name}`}></img>
             </a>
           </Link>
         </div>

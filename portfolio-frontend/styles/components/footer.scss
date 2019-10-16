@@ -4,35 +4,20 @@
   padding-top: $size-6;
   padding-bottom: $size-7;
   margin-bottom: $size-8;
-}
-.footer-info {
-  font-size: $size-2;
-  margin-bottom: $size-6;
-}
-.footer-links {
-  font-size: $size-4;
-  a {
-    color: $grey-0;
-    font-weight: 700;
-    position: relative;
-    text-decoration: none;
-    &::after {
-      background-color: $prime-y-7;
-      bottom: 0;
-      content: ' ';
-      display: block;
-      height: 50%;
-      left: 6px;
-      opacity: 1;
-      position: absolute;
-      transition: all .15s ease-in-out;
-      width: calc(100%);
-      z-index: -1;
-    }
-    &:hover::after {
-      background-color: $prime-y-5;
-      left: -7.5px;
-      width: calc(100% + 17px);
+  &__info {
+    font-size: $size-2;
+    margin-bottom: $size-6;
+  }
+  &__links {
+    font-size: $size-4;
+    a {
+      @extend %default-link;
+      &::after {
+        @extend %link-after;
+      }
+      &:hover::after {
+        @extend %link-hover-after;
+      }
     }
   }
 }

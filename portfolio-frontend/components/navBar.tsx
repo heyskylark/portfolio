@@ -36,14 +36,17 @@ class NavBar extends React.Component<{}, NavBarState> {
     const xmlnsXlink = 'http://www.w3.org/1999/xlink';
     return (
       <nav className="navbar">
-        <div className="mn-header">
-          <div className="mn-logo">
+        <div className="navbar__header">
+          <div className="navbar__logo">
             <Link href="/">
               <a className="fw-heavy">Brandon Feist</a>
             </Link>
           </div>
           <div>
-            <button className="mn-button block" onClick={this.toggleMobileMenu.bind(this)}>
+            <button
+              className="navbar__mobile-button block"
+              onClick={this.toggleMobileMenu.bind(this)}
+            >
               <svg
                 width={width}
                 height={height}
@@ -70,52 +73,52 @@ class NavBar extends React.Component<{}, NavBarState> {
             </button>
           </div>
         </div>
-        <div className={'mn-menu-table ' + (this.state.mobileMenuToggled ? '' : 'none')}>
-          <div className="mn-menu-container">
+        <div className={'menu-table ' + (this.state.mobileMenuToggled ? '' : 'none')}>
+          <div className="menu-table__container">
             <Link href="/">
-              <a className="mn-link fs-6 fw-heavy block">Home</a>
+              <a className="menu-table__link fs-6 fw-heavy block">Home</a>
             </Link>
             <Link href="/projects">
-              <a className="mn-link fs-6 fw-heavy block">Projects</a>
+              <a className="menu-table__link fs-6 fw-heavy block">Projects</a>
             </Link>
             <Link href="/about">
-              <a className="mn-link fs-6 fw-heavy block">About</a>
+              <a className="menu-table__link fs-6 fw-heavy block">About</a>
             </Link>
             <a
-              className="mn-link fs-6 fw-heavy block"
+              className="menu-table__link fs-6 fw-heavy block"
               href="https://twitter.com/heyskylark"
               title="Link to my Twitter."
               target="_blank"
             >
               Twitter
               <FontAwesomeIcon
-                className="mn-external"
+                className="menu-table__external-icon"
                 icon={['fas', 'external-link-alt']}
                 size="xs"
               />
             </a>
             <a
-              className="mn-link fs-6 fw-heavy block"
+              className="menu-table__link fs-6 fw-heavy block"
               href="https://www.github.com/brandonfeist"
               title="Link to my GitHub."
               target="_blank"
             >
               GitHub
               <FontAwesomeIcon
-                className="mn-external"
+                className="menu-table__external-icon"
                 icon={['fas', 'external-link-alt']}
                 size="xs"
               />
             </a>
             <a
-              className="mn-link fs-6 fw-heavy block"
+              className="menu-table__link fs-6 fw-heavy block"
               href="mailto:feist.brandon@gmail.com"
               title="Email me!"
               target="_blank"
             >
               Email
               <FontAwesomeIcon
-                className="mn-external"
+                className="menu-table__external-icon"
                 icon={['fas', 'external-link-alt']}
                 size="xs"
               />

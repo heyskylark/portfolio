@@ -6,21 +6,21 @@
   min-height: 400px;
   margin-bottom: $size-9;
   padding: 1rem 1rem;
-}
-.splash-inner-container {
-  margin: 0 auto;
-  max-width: 500px;
-}
-.splash-header {
-  line-height: 1;
-  margin-bottom: $size-5;
-  text-decoration: underline;
-}
-.splash-text {
-  float: right;
-  line-height: 1.75;
-  width: 85%;
-  p {
-    margin-bottom: $size-1;
+  &__inner-container {
+    margin: 0 auto;
+    max-width: 500px;
+  }
+  &__header {
+    line-height: 1;
+    margin-bottom: $size-5;
+    text-decoration: underline;
+  }
+  &__text {
+    float: right;
+    line-height: 1.75;
+    width: 85%;
+    p {
+      margin-bottom: $size-1;
+    }
   }
 }
