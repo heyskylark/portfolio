@@ -75,8 +75,10 @@
   width: 100%;
 }
 .ps-title {
+  color: $grey-0;
   line-height: 1;
   margin-bottom: $size-0;
+  text-decoration: none;
   text-transform: uppercase;
 }
 .ps-title-div {
