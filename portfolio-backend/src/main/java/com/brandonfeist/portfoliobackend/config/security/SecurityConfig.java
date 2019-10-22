@@ -1,17 +1,20 @@
 package com.brandonfeist.portfoliobackend.config.security;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,15 +22,11 @@ import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
   private final DataSource dataSource;
 
   private PasswordEncoder passwordEncoder;
@@ -48,6 +47,35 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   public AuthenticationManager authenticationManagerBean() throws Exception {
     return super.authenticationManagerBean();
+  }
+
+  @Override
+  public void configure(WebSecurity web) {
+    web
+        .debug(true)
+        .ignoring()
+        .antMatchers(HttpMethod.OPTIONS)
+        .antMatchers("/assets/**", "/swagger-ui.html", "/webjars/**", "/swagger-resources/**", "/v1/**");
+  }
+
+    @Override
+  public void configure(HttpSecurity http) throws Exception {
+      http
+          .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+          .and()
+
+          .authorizeRequests()
+          .antMatchers("/login").permitAll()
+          .anyRequest().authenticated()
+          .and()
+
+          .formLogin().permitAll()
+          .and()
+
+          .logout().permitAll()
+          .and()
+
+          .csrf().disable();
   }
 
   /**
@@ -76,20 +104,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       ((JdbcDaoImpl) userDetailsService).setDataSource(dataSource);
     }
     return userDetailsService;
-  }
-
-  /**
-   * CORS config, needs to be changed eventually. Right now it just lets everything through.
-   */
-  @Bean
-  public CorsConfigurationSource corsConfigurationSource() {
-    CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(Collections.singletonList("*"));
-    configuration.setAllowedMethods(Collections.singletonList("*"));
-    configuration.setAllowedHeaders(Collections.singletonList("*"));
-    configuration.setAllowCredentials(true);
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", configuration);
-    return source;
   }
 }

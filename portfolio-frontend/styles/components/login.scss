@@ -1,0 +1,32 @@
+.login-container {
+  margin: 0 auto;
+  max-width: $size-max-width;
+  &__header {
+    margin-bottom: $size-7;
+    text-align: center;
+  }
+}
+.login-form {
+  &__input {
+    background-color: $grey-8;
+    border: 1px solid $grey-7;
+    border-radius: $size-0;
+    color: $grey-3;
+    display: block;
+    margin-bottom: $size-7;
+    padding: $size-2;
+    width: 100%;
+  }
+  &__btn {
+    background-color: $prime-y-3;
+    border: 1px solid $prime-y-2;
+    border-radius: $size-0;
+    color: $grey-9;
+    display: block;
+    padding: $size-2;
+    width: 100%;
+    &:active {
+      background-color: $prime-y-2;
+    }
+  }
+}

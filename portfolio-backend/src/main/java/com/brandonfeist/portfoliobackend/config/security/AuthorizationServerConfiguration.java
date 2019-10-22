@@ -5,14 +5,12 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import io.micrometer.core.instrument.util.IOUtils;
 import java.io.IOException;
 import java.security.KeyPair;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,7 +25,6 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
-import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 @EnableAuthorizationServer
@@ -71,14 +68,11 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     return tokenStore;
   }
 
-  /**
-   * The token service is customized to include refresh tokens in the token passed to the client.
-   */
   @Bean
+  @Primary
   public DefaultTokenServices tokenServices(final TokenStore tokenStore,
                                             final ClientDetailsService clientDetailsService) {
     DefaultTokenServices tokenServices = new DefaultTokenServices();
-    tokenServices.setSupportRefreshToken(true);
     tokenServices.setTokenStore(tokenStore);
     tokenServices.setClientDetailsService(clientDetailsService);
     tokenServices.setAuthenticationManager(this.authenticationManager);
@@ -112,27 +106,19 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
   @Override
   public void configure(final AuthorizationServerEndpointsConfigurer endpoints) {
-    final Map<String, CorsConfiguration> corsConfigMap = new HashMap<>();
-    CorsConfiguration config = new CorsConfiguration();
-    config.setAllowCredentials(true);
-    // TODO: Make configurable
-    config.setAllowedOrigins(Collections.singletonList("*"));
-    config.setAllowedMethods(Collections.singletonList("*"));
-    config.setAllowedHeaders(Collections.singletonList("*"));
-    corsConfigMap.put("/oauth/token", config);
-
     endpoints.authenticationManager(this.authenticationManager)
         .accessTokenConverter(jwtAccessTokenConverter())
         .userDetailsService(this.userDetailsService)
-        .tokenStore(tokenStore())
-        .getFrameworkEndpointHandlerMapping()
-        .setCorsConfigurations(corsConfigMap);
+        .tokenStore(tokenStore());
   }
 
   @Override
   public void configure(final AuthorizationServerSecurityConfigurer oauthServer) {
-    oauthServer.passwordEncoder(this.passwordEncoder).tokenKeyAccess("permitAll()")
-        .checkTokenAccess("isAuthenticated()");
+    oauthServer
+        .passwordEncoder(this.passwordEncoder)
+        .tokenKeyAccess("permitAll()")
+        .checkTokenAccess("isAuthenticated()")
+        .allowFormAuthenticationForClients();
   }
 
   private KeyPair keyPair(SecurityProperties.JwtProperties jwtProperties,
