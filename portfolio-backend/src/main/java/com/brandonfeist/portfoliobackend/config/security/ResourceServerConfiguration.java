@@ -50,7 +50,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
         .and()
 
         .authorizeRequests()
-        .antMatchers(HttpMethod.GET, ROOT_PATTERN).access("#oauth2.hasScope('write')")
+        .antMatchers(HttpMethod.GET, ROOT_PATTERN).permitAll()
         .antMatchers(HttpMethod.POST, ROOT_PATTERN).access("#oauth2.hasScope('write')")
         .antMatchers(HttpMethod.PATCH, ROOT_PATTERN).access("#oauth2.hasScope('write')")
         .antMatchers(HttpMethod.PUT, ROOT_PATTERN).access("#oauth2.hasScope('write')")

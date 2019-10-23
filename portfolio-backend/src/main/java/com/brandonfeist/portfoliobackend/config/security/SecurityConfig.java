@@ -55,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .debug(true)
         .ignoring()
         .antMatchers(HttpMethod.OPTIONS)
-        .antMatchers("/assets/**", "/swagger-ui.html", "/webjars/**", "/swagger-resources/**", "/v1/**");
+        .antMatchers("/assets/**", "/swagger-ui.html", "/webjars/**", "/swagger-resources/**");
   }
 
     @Override

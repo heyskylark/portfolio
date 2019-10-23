@@ -15,12 +15,12 @@ interface HeadProps {
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const myHead = (C: any) => {
+const myHead = (WrappedComponent: any) => {
   class MyHead extends React.Component<HeadProps & WithRouterProps> {
     static async getInitialProps(router: NextRouter): Promise<object> {
       let componentProps = {};
-      if (typeof C.getInitialProps === 'function') {
-        componentProps = await C.getInitialProps(router);
+      if (typeof WrappedComponent.getInitialProps === 'function') {
+        componentProps = await WrappedComponent.getInitialProps(router);
       }
 
       return {
@@ -42,7 +42,7 @@ const myHead = (C: any) => {
             ></link>
           </Head>
           <NavBar />
-          <C {...this.props} />
+          <WrappedComponent {...this.props} />
           <Footer />
         </div>
       );
@@ -51,26 +51,5 @@ const myHead = (C: any) => {
 
   return MyHead;
 };
-
-// class MyHead extends React.Component<HeadProps> {
-//   render(): JSX.Element {
-//     config.autoAddCss = false;
-//     library.add(faExternalLinkAlt);
-//     const { title } = this.props;
-//     return (
-//       <div>
-//         <Head>
-//           <title>{title}</title>
-//           <link
-//             href="https://fonts.googleapis.com/css?family=Roboto:400,400i,700,700i&display=swap"
-//             rel="stylesheet"
-//           ></link>
-//         </Head>
-
-//         <NavBar />
-//       </div>
-//     );
-//   }
-// }
 
 export default myHead;
