@@ -2,14 +2,20 @@ import * as React from 'react';
 import { Router } from 'next/router';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { logout } from '../utils/auth';
+
 import '../styles/styles.scss';
+
+interface NavBarProps {
+  isLoggedIn: boolean;
+}
 
 interface NavBarState {
   mobileMenuToggled: boolean;
 }
 
-class NavBar extends React.Component<{}, NavBarState> {
-  constructor(props: object) {
+class NavBar extends React.Component<NavBarProps, NavBarState> {
+  constructor(props: NavBarProps) {
     super(props);
 
     this.state = {
@@ -28,6 +34,7 @@ class NavBar extends React.Component<{}, NavBarState> {
   }
 
   render(): JSX.Element {
+    const { isLoggedIn } = this.props;
     const fill = 'hsl(42, 15%, 13%)';
     const width = '24px';
     const height = '24px';
@@ -39,7 +46,9 @@ class NavBar extends React.Component<{}, NavBarState> {
         <div className="navbar__header">
           <div className="navbar__logo">
             <Link href="/">
-              <a className="fw-heavy">Brandon Feist</a>
+              <a className="fw-heavy" title="Home Page Logo">
+                Brandon Feist
+              </a>
             </Link>
           </div>
           <div>
@@ -75,54 +84,97 @@ class NavBar extends React.Component<{}, NavBarState> {
         </div>
         <div className={'menu-table ' + (this.state.mobileMenuToggled ? '' : 'none')}>
           <div className="menu-table__container">
-            <Link href="/">
-              <a className="menu-table__link fs-6 fw-heavy block">Home</a>
-            </Link>
-            <Link href="/projects">
-              <a className="menu-table__link fs-6 fw-heavy block">Projects</a>
-            </Link>
-            <Link href="/about">
-              <a className="menu-table__link fs-6 fw-heavy block">About</a>
-            </Link>
-            <a
-              className="menu-table__link fs-6 fw-heavy block"
-              href="https://twitter.com/heyskylark"
-              title="Link to my Twitter."
-              target="_blank"
-            >
-              Twitter
-              <FontAwesomeIcon
-                className="menu-table__external-icon"
-                icon={['fas', 'external-link-alt']}
-                size="xs"
-              />
-            </a>
-            <a
-              className="menu-table__link fs-6 fw-heavy block"
-              href="https://www.github.com/brandonfeist"
-              title="Link to my GitHub."
-              target="_blank"
-            >
-              GitHub
-              <FontAwesomeIcon
-                className="menu-table__external-icon"
-                icon={['fas', 'external-link-alt']}
-                size="xs"
-              />
-            </a>
-            <a
-              className="menu-table__link fs-6 fw-heavy block"
-              href="mailto:feist.brandon@gmail.com"
-              title="Email me!"
-              target="_blank"
-            >
-              Email
-              <FontAwesomeIcon
-                className="menu-table__external-icon"
-                icon={['fas', 'external-link-alt']}
-                size="xs"
-              />
-            </a>
+            <div>
+              <Link href="/">
+                <a className="menu-table__link fs-6 fw-heavy block" title="Home Page">
+                  Home
+                </a>
+              </Link>
+            </div>
+            <div>
+              <Link href="/projects">
+                <a className="menu-table__link fs-6 fw-heavy block" title="My Projects">
+                  Projects
+                </a>
+              </Link>
+            </div>
+            <div>
+              <Link href="/about">
+                <a className="menu-table__link fs-6 fw-heavy block" title="About Me">
+                  About
+                </a>
+              </Link>
+            </div>
+            <div>
+              <a
+                className="menu-table__link fs-6 fw-heavy block"
+                href="https://twitter.com/heyskylark"
+                title="Link to my Twitter."
+                target="_blank"
+              >
+                Twitter
+                <FontAwesomeIcon
+                  className="menu-table__external-icon"
+                  icon={['fas', 'external-link-alt']}
+                  size="xs"
+                />
+              </a>
+            </div>
+            <div>
+              <a
+                className="menu-table__link fs-6 fw-heavy block"
+                href="https://www.github.com/brandonfeist"
+                title="Link to my GitHub."
+                target="_blank"
+              >
+                GitHub
+                <FontAwesomeIcon
+                  className="menu-table__external-icon"
+                  icon={['fas', 'external-link-alt']}
+                  size="xs"
+                />
+              </a>
+            </div>
+            <div>
+              <a
+                className="menu-table__link fs-6 fw-heavy block"
+                href="mailto:feist.brandon@gmail.com"
+                title="Email me!"
+                target="_blank"
+                onClick={this.logout.bind(this)}
+              >
+                Email
+                <FontAwesomeIcon
+                  className="menu-table__external-icon"
+                  icon={['fas', 'external-link-alt']}
+                  size="xs"
+                />
+              </a>
+            </div>
+            {isLoggedIn ? (
+              <div>
+                <Link href="/dashboard">
+                  <a className="menu-table__link fs-6 fw-heavy block" title="Dashboard">
+                    Dashboard
+                  </a>
+                </Link>
+              </div>
+            ) : (
+              ''
+            )}
+            {isLoggedIn ? (
+              <div>
+                <a
+                  className="menu-table__link fs-6 fw-heavy block pointer"
+                  title="Logout"
+                  onClick={this.logout.bind(this)}
+                >
+                  Logout
+                </a>
+              </div>
+            ) : (
+              ''
+            )}
           </div>
         </div>
       </nav>
@@ -139,6 +191,11 @@ class NavBar extends React.Component<{}, NavBarState> {
     this.setState({
       mobileMenuToggled: !this.state.mobileMenuToggled,
     });
+  }
+
+  private logout(event: { preventDefault: () => void }): void {
+    event.preventDefault();
+    logout();
   }
 }
 

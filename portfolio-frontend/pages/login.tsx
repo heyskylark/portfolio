@@ -1,16 +1,12 @@
 import * as React from 'react';
-import fetch from 'isomorphic-unfetch';
 import { isLoggedIn } from '../utils/auth';
 import { contextRedirect } from '../utils/redirect';
-// import Router from 'next/router';
 import myHead from '../components/myHead';
 import { NextPageContext } from 'next';
-// import { login } from '../utils/auth';
-// import BackendError from '../models/BackendError';
+import { loginWithUsernameAndPassword } from '../utils/auth';
 
 interface LoginProps {
   title: string;
-  loggedIn: boolean;
 }
 interface LoginState {
   username: string;
@@ -31,7 +27,6 @@ class Login extends React.Component<LoginProps, LoginState> {
     }
     return {
       title: 'Login',
-      loggedIn: isLoggedIn(ctx),
     };
   }
   handleChange(event: React.ChangeEvent<HTMLInputElement>): void {
@@ -43,54 +38,10 @@ class Login extends React.Component<LoginProps, LoginState> {
   async handleSubmit(event: React.FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
     const { username, password } = this.state;
-    // TODO - change this url to be variable depending on env
-    // http://localhost:8080/oauth/authorize?grant_type=authorization_code&response_type=code&client_id=testclient
-    const url = 'http://localhost:8080/oauth/token';
-    const formData = new URLSearchParams();
-    formData.append('grant_type', 'password');
-    formData.append('username', username);
-    formData.append('password', password);
-    const request = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        Authorization: 'Basic dGVzdENsaWVudDp0ZXN0cGFzc3dvcmQ=',
-      },
-      body: formData,
-    };
-
-    fetch(url, request)
-      .then(response => {
-        if (response.ok) {
-          return response;
-        } else {
-          const error = new Error(response.statusText);
-          console.log('error: ', error);
-          return Promise.reject(error);
-        }
-      })
-      .then(response => response.json())
-      .then(data => {
-        console.log('data: ', data);
-      })
-      .catch(err => {
-        console.log('fail: ', err);
-      });
-
-    //   try {
-    //     const response = await fetch(url, request);
-    //     if (response.ok) {
-    //       login(await response.json());
-    //       Router.push('/');
-    //     } else {
-    //       // https://github.com/developit/unfetch#caveats
-    //       const error = (await response.json()) as BackendError;
-    //       return Promise.reject(error.error_description);
-    //     }
-    //   } catch (error) {
-    //     console.error('You have an error in your code or there are Network issues.', error);
-    //     // throw new Error(error);
-    //   }
+    const login = await loginWithUsernameAndPassword(username, password);
+    if (typeof login !== 'undefined') {
+      // Network error return error
+    }
   }
   render(): JSX.Element {
     return (

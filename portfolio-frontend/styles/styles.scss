@@ -102,6 +102,9 @@ select {
     border-bottom: 1px solid $grey-6;
   }
 }
+.pointer {
+  cursor: pointer
+}
 
 /* Remove _all_ animations and transitions for people that prefer not to see them */
 @media (prefers-reduced-motion: reduce) {

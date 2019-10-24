@@ -8,9 +8,66 @@ import { contextRedirect } from '../utils/redirect';
 import AuthToken from '../models/authToken';
 import NetworkError from '../models/NetworkError';
 
+// TODO - change this url to be variable depending on env
+const TOKEN_URL = 'http://localhost:8080/oauth/token';
+
+export function isLoggedIn(ctx: NextPageContext): boolean {
+  const { token } = nextCookie(ctx);
+  return !!token;
+}
+
+export function login(token: AuthToken): void {
+  const { access_token, jti } = token;
+  cookie.set('token', access_token);
+  cookie.set('tokenId', jti);
+  Router.push('/dashboard');
+}
+
+export function logout(): void {
+  cookie.remove('token');
+  cookie.remove('tokenId');
+  Router.push('/login');
+}
+
+export async function loginWithUsernameAndPassword(
+  username: string,
+  password: string,
+): Promise<void | NetworkError> {
+  const formData = new URLSearchParams();
+  formData.append('grant_type', 'password');
+  formData.append('username', username);
+  formData.append('password', password);
+  formData.append('client_id', 'testclient'); // TODO Make variable
+  const request = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: formData,
+  };
+  const res = await fetch(TOKEN_URL, request);
+  const data = await res.json();
+
+  try {
+    if (res.ok) {
+      login(data);
+      return;
+    } else {
+      return {
+        status: res.status,
+        errorDescription: data.error_description,
+      };
+    }
+  } catch (err) {
+    return {
+      status: res.status,
+      errorDescription: data.error_description,
+    };
+  }
+}
+
 async function getTokenUsingCodeGrant(grantCode: string): Promise<AuthToken | NetworkError> {
   //TODO make url and redirectUrl variable
-  const url = 'http://localhost:8080/oauth/token';
   const redirectUrl = 'http://localhost:3000/dashboard';
   const formData = new URLSearchParams();
   formData.append('grant_type', 'authorization_code');
@@ -25,7 +82,7 @@ async function getTokenUsingCodeGrant(grantCode: string): Promise<AuthToken | Ne
     },
     body: formData,
   };
-  const res = await fetch(url, request);
+  const res = await fetch(TOKEN_URL, request);
   const data = await res.json();
 
   try {
@@ -45,45 +102,8 @@ async function getTokenUsingCodeGrant(grantCode: string): Promise<AuthToken | Ne
   }
 }
 
-export function isLoggedIn(ctx: NextPageContext): boolean {
+export async function auth(ctx: NextPageContext): Promise<string | undefined> {
   const { token } = nextCookie(ctx);
-  return typeof token !== 'undefined';
-}
-
-export function login(token: AuthToken): void {
-  const { access_token, jti } = token;
-  cookie.set('token', access_token);
-  cookie.set('tokenId', jti);
-  Router.push('/dashboard');
-}
-
-export function logout(): void {
-  cookie.remove('token');
-  cookie.remove('tokenId');
-  Router.push('/login');
-}
-
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function isAuthToken(obj: any): obj is AuthToken {
-  return obj.access_token !== undefined;
-}
-
-export async function auth(
-  ctx: NextPageContext,
-  grantCode?: string,
-): Promise<AuthToken | string | undefined> {
-  let token: AuthToken | string | undefined;
-  token = nextCookie(ctx).token;
-
-  if (grantCode) {
-    await getTokenUsingCodeGrant(grantCode).then(jwt => {
-      if (isAuthToken(jwt)) {
-        token = jwt;
-      }
-      // What to do during server error NetworkError, redirect?
-    });
-  }
 
   if (!token) {
     contextRedirect(ctx, '/login');
