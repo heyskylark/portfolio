@@ -15,7 +15,7 @@ interface HeadProps {
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const myHead = (WrappedComponent: any) => {
+const myHead = (WrappedComponent: any): object => {
   class MyHead extends React.Component<HeadProps & WithRouterProps> {
     static async getInitialProps(router: NextRouter): Promise<object> {
       let componentProps = {};

@@ -1,12 +1,16 @@
 import * as React from 'react';
 import fetch from 'isomorphic-unfetch';
+import { isLoggedIn } from '../utils/auth';
+import { contextRedirect } from '../utils/redirect';
 // import Router from 'next/router';
 import myHead from '../components/myHead';
+import { NextPageContext } from 'next';
 // import { login } from '../utils/auth';
 // import BackendError from '../models/BackendError';
 
 interface LoginProps {
   title: string;
+  loggedIn: boolean;
 }
 interface LoginState {
   username: string;
@@ -21,9 +25,13 @@ class Login extends React.Component<LoginProps, LoginState> {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  static getInitialProps(): LoginProps {
+  static getInitialProps(ctx: NextPageContext): LoginProps {
+    if (isLoggedIn(ctx)) {
+      contextRedirect(ctx, '/dashboard');
+    }
     return {
       title: 'Login',
+      loggedIn: isLoggedIn(ctx),
     };
   }
   handleChange(event: React.ChangeEvent<HTMLInputElement>): void {
