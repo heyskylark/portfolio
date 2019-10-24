@@ -12,29 +12,28 @@ interface HomeProps {
 }
 class Home extends React.Component<HomeProps> {
   static async getInitialProps(): Promise<HomeProps> {
-    try {
-      //TODO Change URL to be variable and also sort by importance order
-      const res = await fetch('http://localhost:8080/v1/projects?size=4');
-      const data = await res.json();
-
-      if (res.status == 200) {
-        return {
+    // TODO - change url to be variable
+    return fetch('http://localhost:8080/v1/projects?size=4')
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return Promise.reject({
+            title: 'Brandon Feist',
+            projects: [],
+            error: 'There was a problem loading the projects.',
+          });
+        }
+      })
+      .then(data => {
+        return Promise.resolve({
           title: 'Brandon Feist',
           projects: data.content,
-        };
-      } else {
-        return {
-          title: 'Brandon Feist',
-          projects: [],
-        };
-      }
-    } catch (err) {
-      return {
-        title: 'Brandon Feist',
-        projects: [],
-        error: err,
-      };
-    }
+        });
+      })
+      .catch(err => {
+        return Promise.reject(err);
+      });
   }
   render(): JSX.Element {
     const { projects } = this.props;

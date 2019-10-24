@@ -16,24 +16,29 @@ interface ProjectDescriptionProps {
 class Project extends React.Component<ProjectDescriptionProps & WithRouterProps> {
   static async getInitialProps(router: NextRouter): Promise<ProjectDescriptionProps> {
     const { slug } = router.query;
-    try {
-      // TODO change url to be variable
-      const res = await fetch(`http://localhost:8080/v1/projects/${slug}`);
-      const data = await res.json();
-
-      if (res.status == 200) {
+    // TODO - make url variable
+    return fetch(`http://localhost:8080/v1/projects/${slug}`)
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return Promise.reject({
+            title: 'Error Loading Project',
+            projects: [],
+            error: `There was a problem loading project ${slug}.`,
+          });
+        }
+      })
+      .then(data => {
         const projectTitle = `${data.name} | Projects`;
-        return {
+        return Promise.resolve({
           title: projectTitle,
           project: data,
-        };
-      } else {
-        throw new Error(`${res.status}`);
-      }
-    } catch (err) {
-      console.log(err);
-      throw new Error(err);
-    }
+        });
+      })
+      .catch(err => {
+        return Promise.reject(err);
+      });
   }
   render(): JSX.Element {
     const { project } = this.props;

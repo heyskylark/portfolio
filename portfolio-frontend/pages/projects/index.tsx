@@ -11,28 +11,28 @@ interface ProjectsProps {
 
 class Projects extends React.Component<ProjectsProps> {
   static async getInitialProps(): Promise<ProjectsProps> {
-    try {
-      const res = await fetch('http://localhost:8080/v1/projects');
-      const data = await res.json();
-
-      if (res.status == 200) {
-        return {
+    // TODO - make url variable
+    return fetch('http://localhost:8080/v1/projects')
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return Promise.reject({
+            title: 'My Projects',
+            projects: [],
+            error: 'There was a problem loading the projects.',
+          });
+        }
+      })
+      .then(data => {
+        return Promise.resolve({
           title: 'My Projects',
           projects: data.content,
-        };
-      } else {
-        return {
-          title: 'My Projects',
-          projects: [],
-        };
-      }
-    } catch (err) {
-      return {
-        title: 'My Projects',
-        projects: [],
-        error: err,
-      };
-    }
+        });
+      })
+      .catch(err => {
+        return Promise.reject(err);
+      });
   }
   render(): JSX.Element {
     const { projects } = this.props;

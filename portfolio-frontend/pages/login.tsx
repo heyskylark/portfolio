@@ -35,13 +35,13 @@ class Login extends React.Component<LoginProps, LoginState> {
     } as Pick<LoginState, 'username' | 'password' | 'error'>;
     this.setState(result);
   }
-  async handleSubmit(event: React.FormEvent<HTMLFormElement>): Promise<void> {
+  handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
     event.preventDefault();
     const { username, password } = this.state;
-    const login = await loginWithUsernameAndPassword(username, password);
-    if (typeof login !== 'undefined') {
-      // Network error return error
-    }
+    loginWithUsernameAndPassword(username, password).catch(err => {
+      // TODO show error message when login fails
+      console.log('Login error:', err);
+    });
   }
   render(): JSX.Element {
     return (

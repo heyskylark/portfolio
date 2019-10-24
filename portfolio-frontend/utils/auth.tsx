@@ -45,25 +45,23 @@ export async function loginWithUsernameAndPassword(
     },
     body: formData,
   };
-  const res = await fetch(TOKEN_URL, request);
-  const data = await res.json();
 
-  try {
-    if (res.ok) {
+  return fetch(TOKEN_URL, request)
+    .then(res => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        return Promise.reject('Invalid Login.');
+      }
+    })
+    .then(data => {
+      console.log('data ', data);
       login(data);
-      return;
-    } else {
-      return {
-        status: res.status,
-        errorDescription: data.error_description,
-      };
-    }
-  } catch (err) {
-    return {
-      status: res.status,
-      errorDescription: data.error_description,
-    };
-  }
+      return Promise.resolve();
+    })
+    .catch(err => {
+      return Promise.reject(err);
+    });
 }
 
 async function getTokenUsingCodeGrant(grantCode: string): Promise<AuthToken | NetworkError> {
@@ -102,7 +100,7 @@ async function getTokenUsingCodeGrant(grantCode: string): Promise<AuthToken | Ne
   }
 }
 
-export async function auth(ctx: NextPageContext): Promise<string | undefined> {
+export function auth(ctx: NextPageContext): string | undefined {
   const { token } = nextCookie(ctx);
 
   if (!token) {
