@@ -55,7 +55,6 @@ export async function loginWithUsernameAndPassword(
       }
     })
     .then(data => {
-      console.log('data ', data);
       login(data);
       return Promise.resolve();
     })
