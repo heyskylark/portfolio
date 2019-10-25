@@ -17,11 +17,7 @@ class Projects extends React.Component<ProjectsProps> {
         if (res.ok) {
           return res.json();
         } else {
-          return Promise.reject({
-            title: 'My Projects',
-            projects: [],
-            error: 'There was a problem loading the projects.',
-          });
+          return Promise.reject(new Error('There was a problem loading the projects.'));
         }
       })
       .then(data => {
@@ -31,7 +27,11 @@ class Projects extends React.Component<ProjectsProps> {
         });
       })
       .catch(err => {
-        return Promise.reject(err);
+        return {
+          title: 'My Projects',
+          projects: [],
+          error: err,
+        };
       });
   }
   render(): JSX.Element {

@@ -8,7 +8,7 @@ import ProjectsTable from '../components/projectsTable';
 interface HomeProps {
   title: string;
   projects: Array<ProjectSummary>;
-  error?: object;
+  error?: string;
 }
 class Home extends React.Component<HomeProps> {
   static async getInitialProps(): Promise<HomeProps> {
@@ -18,21 +18,22 @@ class Home extends React.Component<HomeProps> {
         if (res.ok) {
           return res.json();
         } else {
-          return Promise.reject({
-            title: 'Brandon Feist',
-            projects: [],
-            error: 'There was a problem loading the projects.',
-          });
+          return Promise.reject(new Error('There was a problem loading the projects.'));
         }
       })
       .then(data => {
         return Promise.resolve({
           title: 'Brandon Feist',
           projects: data.content,
+          error: 'Hello',
         });
       })
       .catch(err => {
-        return Promise.reject(err);
+        return {
+          title: 'Brandon Feist',
+          projects: [],
+          error: err,
+        };
       });
   }
   render(): JSX.Element {
@@ -41,7 +42,7 @@ class Home extends React.Component<HomeProps> {
       <div>
         <Splash />
         <div className="title-container">
-          <h2>Top Projects</h2>
+          <h2 className="fs-7">Top Projects</h2>
         </div>
         <ProjectsTable projects={projects} />
       </div>

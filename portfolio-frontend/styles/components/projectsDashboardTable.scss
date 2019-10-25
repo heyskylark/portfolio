@@ -1,0 +1,21 @@
+.project-table {
+  border-radius: $size-0;
+  overflow: hidden;
+}
+.project-table-header {
+  background-color: $grey-8;;
+  display: flex;
+  padding: $size-6 $size-3;
+  &__img-header {
+    color: $grey-3;
+    width: $size-9;
+  }
+  &__header {
+    color: $grey-3;
+    flex-grow: 1;
+  }
+  &__menu-header {
+    color: $grey-3;
+    width: $size-6;
+  }
+}

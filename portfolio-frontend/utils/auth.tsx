@@ -57,9 +57,6 @@ export async function loginWithUsernameAndPassword(
     .then(data => {
       login(data);
       return Promise.resolve();
-    })
-    .catch(err => {
-      return Promise.reject(err);
     });
 }
 

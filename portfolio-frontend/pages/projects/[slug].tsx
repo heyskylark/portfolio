@@ -22,11 +22,7 @@ class Project extends React.Component<ProjectDescriptionProps & WithRouterProps>
         if (res.ok) {
           return res.json();
         } else {
-          return Promise.reject({
-            title: 'Error Loading Project',
-            projects: [],
-            error: `There was a problem loading project ${slug}.`,
-          });
+          return Promise.reject(new Error(`There was a problem loading project ${slug}.`));
         }
       })
       .then(data => {
@@ -35,15 +31,18 @@ class Project extends React.Component<ProjectDescriptionProps & WithRouterProps>
           title: projectTitle,
           project: data,
         });
-      })
-      .catch(err => {
-        return Promise.reject(err);
       });
+    // TODO - maybe see about error page re-routes or error page catcher
+    // .catch(err => {
+    //   return {
+    //     title: `Error Loading Project`,
+    //     error: err,
+    //   };
+    // });
   }
   render(): JSX.Element {
     const { project } = this.props;
     const { name, description, projectType, imageUrl, projectDate } = project;
-
     return (
       <div>
         <div className="container">

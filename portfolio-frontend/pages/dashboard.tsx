@@ -1,6 +1,7 @@
 import * as React from 'react';
 import myHead from '../components/myHead';
 import withAuthSync from '../components/withAuthSync';
+import ProjectsDashboardTable from '../components/projectsDashboardTable';
 
 interface DashboardProps {
   title: string;
@@ -14,8 +15,8 @@ class Dashboard extends React.Component<DashboardProps> {
   }
   render(): JSX.Element {
     return (
-      <div>
-        <h1>Dashboard!</h1>
+      <div className="container">
+        <ProjectsDashboardTable />
       </div>
     );
   }

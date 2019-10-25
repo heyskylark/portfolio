@@ -68,9 +68,11 @@
 .ps-container {
   margin-bottom: $size-10;
   &__title {
+    margin-bottom: $size-6;
+  }
+  &__title-link {
     color: $grey-0;
     line-height: 1;
-    margin-bottom: $size-0;
     text-decoration: none;
     text-transform: uppercase;
   }
@@ -87,7 +89,7 @@
     margin-left: 1px;
     width: $size-10;
   }
-  &__type {
+  &__info {
     margin-bottom: $size-7;
   }
   &__tech {

@@ -90,10 +90,6 @@ select {
     width: calc(100%);
     z-index: -1;
   }
-  h1,
-  h2 {
-    font-size: $size-8;
-  }
 }
 .border {
   width: 100%;
@@ -121,4 +117,5 @@ select {
 @import 'components/about';
 @import 'components/login';
 @import 'components/footer';
+@import 'components/projectsDashboardTable';
 @import '../node_modules/@fortawesome/fontawesome-svg-core/styles';
