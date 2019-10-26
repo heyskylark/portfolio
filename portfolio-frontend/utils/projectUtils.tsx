@@ -10,7 +10,7 @@ export function compileTechnologies(technologies: Array<Technology>): string {
   return techString;
 }
 
-export function formatDate(date: Date): string {
+export function formatDate(date: Date, dateString: string): string {
   Moment.locale('en');
-  return Moment(date).format('MMMM DD, YYYY');
+  return Moment(date).format(dateString);
 }

@@ -48,7 +48,7 @@ class Project extends React.Component<ProjectDescriptionProps & WithRouterProps>
         <div className="container">
           <header className="pd-header">
             <h2 className="pd-header__type fs-3 fc-terit fw-normal">
-              {formatDate(projectDate)} &middot; {projectType}
+              {formatDate(projectDate, 'MMMM DD, YYYY')} &middot; {projectType}
             </h2>
             <h1 className="pd-header__title fs-8 fw-heavy fs-wide">{name}</h1>
             <div className="pd-header__img-container">

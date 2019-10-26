@@ -36,7 +36,7 @@ class ProjectSummary extends React.Component<ProjectSummaryProps> {
               {compileTechnologies(technologies)}
             </h3>
             <h2 className="fs-3 fc-terit fw-normal">
-              {formatDate(projectDate)} &middot; {projectType}
+              {formatDate(projectDate, 'MMMM DD, YYYY')} &middot; {projectType}
             </h2>
           </div>
         </div>

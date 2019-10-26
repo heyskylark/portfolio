@@ -4,7 +4,7 @@ import NavBar from './navBar';
 import { WithRouterProps } from 'next/dist/client/with-router';
 import { NextRouter } from 'next/router';
 import { library, config } from '@fortawesome/fontawesome-svg-core';
-import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
+import { faExternalLinkAlt, faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { isLoggedIn } from '../utils/auth';
 import { NextPageContext } from 'next';
 import Footer from './footer';
@@ -34,7 +34,7 @@ const myHead = (WrappedComponent: any): object => {
 
     render(): JSX.Element {
       config.autoAddCss = false;
-      library.add(faExternalLinkAlt);
+      library.add(faExternalLinkAlt, faEllipsisH);
       const { title, isLoggedIn } = this.props;
       return (
         <div>
