@@ -29,16 +29,16 @@ class ProjectsDashboardTableInfo extends React.Component<
     const { name, projectDate } = project;
     const date = formatDate(projectDate, 'MMM DD, YYYY');
     return (
-      <div className={'project-table-info' + (isLast ? ' project-table-info--last' : '')}>
-        {/* <div className="project-table-info__img-header"></div> */}
-        <div className="project-table-info__header">
-          <p className="project-table-info__name fs-tight fc-main">{name}</p>
-          <p className="project-table-info__date fs-tight fc-terit">{date}</p>
+      <div className={'project-dash-table-info' + (isLast ? ' project-dash-table-info--last' : '')}>
+        {/* <div className="project-dash-table-info__img-header"></div> */}
+        <div className="project-dash-table-info__header">
+          <p className="project-dash-table-info__name fs-tight fc-main">{name}</p>
+          <p className="project-dash-table-info__date fs-tight fc-terit">{date}</p>
         </div>
-        {/* <div className="project-table-info__header">{projectDate}</div> */}
-        <div className="project-table-info__menu">
+        {/* <div className="project-dash-table-info__header">{projectDate}</div> */}
+        <div className="project-dash-table-info__menu">
           <button
-            className="project-table-info__menu-icon fc-terit"
+            className="project-dash-table-info__menu-icon fc-terit"
             onClick={this.toggleMenuButton.bind(this)}
           >
             <FontAwesomeIcon icon={['fas', 'ellipsis-h']} size="lg" />
@@ -46,12 +46,12 @@ class ProjectsDashboardTableInfo extends React.Component<
         </div>
         <div
           className={
-            'project-table-popup box-shadow-0 ' +
+            'project-dash-table-popup box-shadow-0 ' +
             (!this.state.projectMenuToggled ? 'block' : 'none')
           }
         >
-          <button className="project-table-popup__edit fs-3">Edit</button>
-          <button className="project-table-popup__delete fs-3">Delete</button>
+          <button className="project-dash-table-popup__edit fs-3">Edit</button>
+          <button className="project-dash-table-popup__delete fs-3">Delete</button>
         </div>
       </div>
     );

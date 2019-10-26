@@ -1,11 +1,11 @@
-.project-table-wrap {
+.project-dash-table-wrap {
   position: relative;
 }
-.project-table {
+.project-dash-table {
   border-radius: $size-0;
   overflow: hidden;
 }
-.project-table-header {
+.project-dash-table-header {
   background-color: $grey-8;
   border-bottom: 2px solid $grey-7;
   display: flex;
@@ -24,14 +24,14 @@
     width: 15%;
   }
 }
-.project-table-body {
+.project-dash-table-body {
   &--empty {
     border-top: 1px solid $grey-7;
     padding: $size-8;
     text-align: center;
   }
 }
-.project-table-info {
+.project-dash-table-info {
   background-color: $grey-9;
   border-bottom: 1px solid $grey-7;
   display: flex;
@@ -62,22 +62,29 @@
     margin-bottom: $size-1;
   }
 }
-.project-table-popup {
+.project-dash-table-popup {
   background-color: $grey-9;
   border-radius: $size-0;
-  padding: $size-0 $size-9 $size-0 $size-1;
+  overflow: hidden;
   position: absolute;
   right: $size-4;
   // top: 40px;
   &__edit {
+    background-color: $grey-9;
+    border: 0;
+    border-bottom: 1px solid $grey-7;
+    display: block;
     margin: 0;
-    padding: 0;
+    padding: $size-0 $size-9 $size-0 $size-1;
     text-align: left;
     width: 100%;
   }
   &__delete {
+    background-color: $grey-9;
+    display: block;
+    border: 0;
     margin: 0;
-    padding: 0;
+    padding: $size-0 $size-9 $size-0 $size-1;
     text-align: left;
     width: 100%;
   }

@@ -12,13 +12,13 @@ class ProjectsDashboardTable extends React.Component<ProjectsDashboardTableProps
     return (
       <div>
         <h1 className="table-title fs-7">Project Table</h1>
-        <div className="project-table-wrap">
+        <div className="project-dash-table-wrap">
           <div className="project-table box-shadow-0">
-            <div className="project-table-header">
-              {/* <div className="project-table-header__img-header"></div> */}
-              <div className="project-table-header__header fw-heavy fs-wide">Name</div>
-              {/* <div className="project-table-header__header fw-heavy">Date</div> */}
-              <div className="project-table-header__menu-header"></div>
+            <div className="project-dash-table-header">
+              {/* <div className="project-dash-table-header__img-header"></div> */}
+              <div className="project-dash-table-header__header fw-heavy fs-wide">Name</div>
+              {/* <div className="project-dash-table-header__header fw-heavy">Date</div> */}
+              <div className="project-dash-table-header__menu-header"></div>
             </div>
             {projects && projects.length > 0 ? (
               projects.map((project, index) => {
@@ -32,7 +32,7 @@ class ProjectsDashboardTable extends React.Component<ProjectsDashboardTableProps
                 );
               })
             ) : (
-              <div className="project-table-body project-table-body--empty">
+              <div className="project-dash-table-body project-dash-table-body--empty">
                 <h2>No projects exist.</h2>
               </div>
             )}
