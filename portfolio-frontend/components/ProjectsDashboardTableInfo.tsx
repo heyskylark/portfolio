@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface ProjectsDashboardTableInfoProps {
   project: ProjectSummary;
-  isLast: boolean;
 }
 
 interface ProjectsDashboardTableInfoState {
@@ -25,11 +24,11 @@ class ProjectsDashboardTableInfo extends React.Component<
   }
 
   render(): JSX.Element {
-    const { project, isLast } = this.props;
+    const { project } = this.props;
     const { name, projectDate } = project;
     const date = formatDate(projectDate, 'MMM DD, YYYY');
     return (
-      <div className={'project-dash-table-info' + (isLast ? ' project-dash-table-info--last' : '')}>
+      <div className="project-dash-table-info">
         {/* <div className="project-dash-table-info__img-header"></div> */}
         <div className="project-dash-table-info__header">
           <p className="project-dash-table-info__name fs-tight fc-main">{name}</p>

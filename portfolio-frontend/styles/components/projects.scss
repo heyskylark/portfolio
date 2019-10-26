@@ -67,6 +67,9 @@
 }
 .ps-container {
   margin-bottom: $size-10;
+  &:last-child {
+    margin-bottom: $size-1;
+  }
   &__title {
     margin-bottom: $size-6;
   }

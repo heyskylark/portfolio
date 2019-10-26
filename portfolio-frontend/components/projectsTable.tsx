@@ -11,8 +11,7 @@ class ProjectsTable extends React.Component<ProjectsTableProps> {
     const { projects } = this.props;
     return (
       <div className="ps-table">
-        {projects.map((project, index) => {
-          const isLast = index === projects.length - 1;
+        {projects.map(project => {
           return (
             <Project
               key={project.slug}
@@ -23,7 +22,6 @@ class ProjectsTable extends React.Component<ProjectsTableProps> {
               summary={project.summary}
               projectDate={new Date(project.projectDate)}
               slug={project.slug}
-              isLast={isLast}
             />
           );
         })}

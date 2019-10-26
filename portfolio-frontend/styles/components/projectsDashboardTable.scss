@@ -40,8 +40,8 @@
   // &__img-header {
   //   width: 15%;
   // }
-  &--last {
-    border-bottom: none;
+  &:last-child {
+    border-bottom: 0;
   }
   &__header {
     padding-right: $size-4;
