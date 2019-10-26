@@ -45,7 +45,7 @@ class ProjectsDashboardTableInfo extends React.Component<
         </div>
         <div
           className={
-            'project-dash-table-popup box-shadow-0 ' +
+            'project-dash-table-popup box-shadow-1 ' +
             (!this.state.projectMenuToggled ? 'block' : 'none')
           }
         >

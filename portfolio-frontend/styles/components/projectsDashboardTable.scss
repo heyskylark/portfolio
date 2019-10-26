@@ -1,13 +1,12 @@
-.project-dash-table-wrap {
-  position: relative;
-}
 .project-dash-table {
   border-radius: $size-0;
-  overflow: hidden;
 }
 .project-dash-table-header {
   background-color: $grey-8;
   border-bottom: 2px solid $grey-7;
+  // This has to be done because a parent div with overflow hidden screws up the popups.
+  border-top-left-radius: $size-0;
+  border-top-right-radius: $size-0;
   display: flex;
   padding: $size-6 $size-4;
   // &__img-header {
@@ -36,12 +35,16 @@
   border-bottom: 1px solid $grey-7;
   display: flex;
   padding: $size-7 $size-4;
+  position: relative;
   text-align: left;
   // &__img-header {
   //   width: 15%;
   // }
   &:last-child {
     border-bottom: 0;
+    // This has to be done because a parent div with overflow hidden screws up the popups.
+    border-bottom-left-radius: $size-0;
+    border-bottom-right-radius: $size-0;
   }
   &__header {
     padding-right: $size-4;
@@ -68,7 +71,8 @@
   overflow: hidden;
   position: absolute;
   right: $size-4;
-  // top: 40px;
+  top: 65px;
+  z-index: 999;
   &__edit {
     background-color: $grey-9;
     border: 0;
