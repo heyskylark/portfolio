@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Link from 'next/link';
 import ProjectSummary from '../models/ProjectSummary';
 import ProjectsDashboardTableInfo from './projectsDashboardTableInfo';
 
@@ -11,8 +12,18 @@ class ProjectsDashboardTable extends React.Component<ProjectsDashboardTableProps
     const { projects } = this.props;
     return (
       <div>
-        <h1 className="table-title fs-7">Project Table</h1>
-        <div className="project-dash-table box-shadow-0">
+        <div className="project-dash-table-title">
+          <h1 className="project-dash-table-title__title fs-7">Project Table</h1>
+          <Link href="/dashboard/projects/new">
+            <a
+              className="project-dash-table-title__btn fs-3 fs-tight"
+              title="Create a new project."
+            >
+              New Project
+            </a>
+          </Link>
+        </div>
+        <div className="project-dash-table">
           <div className="project-dash-table-header">
             {/* <div className="project-dash-table-header__img-header"></div> */}
             <div className="project-dash-table-header__header fw-heavy fs-wide">Name</div>
