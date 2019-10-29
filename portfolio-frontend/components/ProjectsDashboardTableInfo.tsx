@@ -1,11 +1,13 @@
 import * as React from 'react';
 import Link from 'next/link';
+import fetch from 'isomorphic-unfetch';
 import ProjectSummary from '../models/ProjectSummary';
 import { formatDate } from '../utils/projectUtils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface ProjectsDashboardTableInfoProps {
   project: ProjectSummary;
+  token?: string;
 }
 
 interface ProjectsDashboardTableInfoState {
@@ -23,7 +25,6 @@ class ProjectsDashboardTableInfo extends React.Component<
       projectMenuToggled: false,
     };
   }
-
   render(): JSX.Element {
     const { project } = this.props;
     const { name, projectDate, slug } = project;
@@ -79,11 +80,29 @@ class ProjectsDashboardTableInfo extends React.Component<
 
   private deleteProject(event: { preventDefault: () => void }): void {
     event.preventDefault();
-    console.log('Delete project:', this.props.project);
+    const { project, token } = this.props;
+    const { name, slug } = project;
+    const url = `http://localhost:8080/v1/projects/${slug}`;
+    const request = {
+      method: 'DELETE',
+      headers: {
+        Authorization: `bearer ${token}`,
+      },
+    };
+    fetch(url, request)
+      .then(res => {
+        if (res.ok) {
+          // On delete success the table needs to know to refresh/or remove that project
+          //    Maybe do a page reload..
+        } else {
+          Promise.reject(`There was an issue deleting ${name}`);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        // If delete fail popup a toast/notification
+      });
     // Change state to show loading/deleting
-    // If delete fail popup a toast/notification
-    // On delete success the table needs to know to refresh/or remove that project
-    //    Maybe do a page reload..
   }
 }
 

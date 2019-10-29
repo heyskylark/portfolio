@@ -11,6 +11,11 @@ import NetworkError from '../models/NetworkError';
 // TODO - change this url to be variable depending on env
 const TOKEN_URL = 'http://localhost:8080/oauth/token';
 
+export function getToken(ctx: NextPageContext): string {
+  const { token } = nextCookie(ctx);
+  return `bearer ${token}`;
+}
+
 export function isLoggedIn(ctx: NextPageContext): boolean {
   const { token } = nextCookie(ctx);
   return !!token;
