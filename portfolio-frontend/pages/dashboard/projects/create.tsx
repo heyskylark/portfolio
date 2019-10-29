@@ -51,6 +51,7 @@ class CreateProject extends React.Component<CreateProjectProps, CreateProjectSta
     // Upload the image and get the imageUrl
     // Then upload the project
     // Maybe upload the image in the handleChange step just for images and dont let a submit until image is uploaded
+    // For now for time sake, I will upload the image manually and then just paste it to an input field
     // TODO - change url to be variable
     const url = 'http://localhost:8080/v1/projects';
     const request = {
@@ -89,13 +90,21 @@ class CreateProject extends React.Component<CreateProjectProps, CreateProjectSta
           />
           <label className="fs-3">Image</label>
           <input
+            type="text"
+            id="imageUrl"
+            name="imageUrl"
+            value={this.state.imageUrl}
+            onChange={this.handleChange}
+            required
+          />
+          {/* <input
             type="file"
             id="image"
             name="image"
             value={this.state.image}
             onChange={this.handleChange}
             required
-          />
+          /> */}
           <label className="fs-3">Project Type</label>
           <input
             type="text"
