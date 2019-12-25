@@ -1,0 +1,5 @@
+{
+  "python.pythonPath": "/Users/brandonfeist/Documents/git/portfolio/portfolio-django/env/bin/python3",
+  "python.linting.pylintEnabled": true,
+  "python.linting.enabled": false
+}
