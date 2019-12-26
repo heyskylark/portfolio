@@ -1,10 +1,8 @@
 from django.urls import path, include
-from . import views
+from .views import ProjectView
 from rest_framework import routers
 
-router = routers.DefaultRouter()
-router.register('projects', views.ProjectView)
-
 urlpatterns = [
-    path('', include(router.urls))
+    path('projects/', ProjectView.list, name="ProjectView.list"),
+    path('projects/<slug>/', ProjectView.retrieve, name='ProjectView.retrieve'),
 ]
